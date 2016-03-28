@@ -28,9 +28,15 @@ output:
 bibliography: Derek.bib
 ---
 
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(rticles)
+library(rmarkdown)
+library(yaml)
+```
+
 # Introduction
 
-In the last decade, Occupancy modeling has been used more and more as a method to account for how species respond to environmental or anthropogenic factors. It has also been shown to be useful as a species distribution modeling tool when species have imperfect detection \cite{mackenzie_estimating_2002}. Anthore use for what it has been used is for managers to change the environment of managed areas in order to improve the status of species of conservation concern. Unfortunantely this decision usually comes without taking into account the effect of such management action on species diversity. There has been several authors championing for the use of species specific or diversity related approaches to plan conservation issues, but as far as we know this is the first method that takes into account both species diversity and individual species abundance in order to select conservation areas.
+In the last decade, Occupancy modeling has been used more and more as a method to account for how species respond to environmental or anthropogenic factors. It has also been shown to be useful as a species distribution modeling tool when species have imperfect detection. Anthore use for what it has been used is for managers to change the environment of managed areas in order to improve the status of species of conservation concern. Unfortunantely this decision usually comes without taking into account the effect of such management action on species diversity. There has been several authors championing for the use of species specific or diversity related approaches to plan conservation issues, but as far as we know this is the first method that takes into account both species diversity and individual species abundance in order to select conservation areas.\citep{mackenzie_estimating_2002}.
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library(knitr)
@@ -161,5 +167,6 @@ responseplot.abund(batmodel.selected, spp = 2, variable = Burn.intensity.soil)
 #Discussion
 
 The \pkg{DiversityOccupancy} package lets scientists and managers take dessitions based on species information, diversity information or both. In some countries, laws require that the decision is taken based on endangered species information, the possibility on selecting an area, or manage environments based on both diversity and species specific information, gives a possibility to managers or decision makers wanting to use diversity with laws requiring them to take species into account.
+
 
 # References
