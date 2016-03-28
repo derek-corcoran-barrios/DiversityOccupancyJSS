@@ -1,0 +1,56 @@
+---
+author:
+  - name: Derek Corcoran
+    affiliation: University of Missouri
+    address: >
+      First line
+      Second line
+    email: corcoranbarriosd@missouri.edu
+    url: http://rstudio.com
+  - name: Elisabeth Webb
+    affiliation: University of Missouri
+  - name: Dylan Kesler
+    affiliation: University of Missouri
+bibliography: Derek.bib
+title:
+  formatted: "Selecting priority areas from diversity and individual species abundance \\pkg{DiversityOccupancy}"
+  # For running headers, if needed
+  short:     "\\pkg{DiversityOccupancy}: Selecting Priority Areas"
+abstract: >
+  The abstract of the article.
+keywords:
+  # at least one keyword must be supplied
+  formatted: [keywords, not capitalized, "\\proglang{Java}"]
+  plain:     [keywords, not capitalized, Java]
+preamble: >
+  \usepackage{amsmath}
+output: rticles::jss_article
+---
+
+# Introduction
+
+This template demonstrates some of the basic latex you'll need to know to create a JSS article.
+
+## Code formatting
+
+Don't use markdown, instead use the more precise latex commands:
+
+* \proglang{Java}
+* \pkg{plyr}
+* \code{print("abc")}
+
+# R code
+
+Can be inserted in regular R markdown blocks.
+
+```{r}
+x <- 1:10
+x
+```
+Bibliography
+
+\cite{healy_metabolic_2013} lay the theretical background
+
+Blah blah [see @healy_metabolic_2013, pp. 33-35; also @smith04, ch. 1].
+
+# References

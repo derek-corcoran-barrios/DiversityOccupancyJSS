@@ -1,0 +1,83 @@
+\documentclass[article]{jss}
+\usepackage[utf8]{inputenc}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\author{
+Derek Corcoran\\University of Missouri \And Elisabeth Webb\\University of Missouri \And Dylan Kesler\\University of Missouri
+}
+\title{Selecting priority areas from Diversity and individual species abundance
+\pkg{DiversityOccupancy}}
+\Keywords{keywords, not capitalized, \proglang{Java}}
+
+\Abstract{
+The abstract of the article.
+}
+
+\Plainauthor{Derek Corcoran, Elisabeth Webb, Dylan Kesler}
+\Shorttitle{\pkg{DiversityOccupancy}: Selecting Priority Areas}
+\Plainkeywords{keywords, not capitalized, Java}
+
+%% publication information
+%% \Volume{50}
+%% \Issue{9}
+%% \Month{June}
+%% \Year{2012}
+\Submitdate{}
+%% \Acceptdate{2012-06-04}
+
+\Address{
+    Derek Corcoran\\
+  University of Missouri\\
+  First line Second line\\
+  E-mail: \href{mailto:corcoranbarriosd@missouri.edu}{\nolinkurl{corcoranbarriosd@missouri.edu}}\\
+  URL: \url{http://rstudio.com}\\~\\
+      }
+
+\usepackage{amsmath}
+
+\begin{document}
+
+\section{Introduction}\label{introduction}
+
+This template demonstrates some of the basic latex you'll need to know
+to create a JSS article.
+
+\subsection{Code formatting}\label{code-formatting}
+
+Don't use markdown, instead use the more precise latex commands:
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  \proglang{Java}
+\item
+  \pkg{plyr}
+\item
+  \code{print("abc")}
+\end{itemize}
+
+\section{R code}\label{r-code}
+
+Can be inserted in regular R markdown blocks.
+
+\begin{CodeChunk}
+\begin{CodeInput}
+x <- 1:10
+x
+\end{CodeInput}
+\begin{CodeOutput}
+ [1]  1  2  3  4  5  6  7  8  9 10
+\end{CodeOutput}
+\end{CodeChunk}
+
+Bibliography
+
+\cite{healy_metabolic_2013} lay the theretical background
+
+Blah blah
+\citetext{\citealp[see][pp.~33-35]{healy_metabolic_2013}; \citealp[also][ch.~1]{smith04}}.
+
+\end{document}
+
