@@ -51,6 +51,37 @@ conservation concern and high species diversity.
 
 \section{Introduction}\label{introduction}
 
+\subsection{Single-species or multiple-species
+management}\label{single-species-or-multiple-species-management}
+
+The ecological and management literature has usually valued the idea of
+managing for diversity. This, however clashes with the classic way in
+which conservation takes place. conservation agencies, goverments and
+scientists usually classify species according to a conservation status,
+and policies are made to safeward the ones that are envisioned as
+species of conservation concerned. Single species are easier to manage
+for, and it is easier to keep track the status of a specie than it is to
+define management for diversity, it is also more complicated to sample
+to keep track of changes in diversity.
+
+One of the problems of managing simple species, is that is usually very
+difficult to predict what will happend to other species and because of
+that it is hard to predict what will happend to diversity
+\citep{pulliam2000relationship}
+
+In this paper we present package \pkg{DiversityOccupancy}, used in the
+\proglang{R} environment, The objective of this package is to
+simultaneously model factors associated with occupancy and abundance of
+individual species using a detection history file, and to use predicted
+abundances to calculate species diversity for each sampling site. The
+package then models factor(s) associated with among-site species
+diversity, which can then be combined with spatial data to identify
+areas that contain both high abundance of species of conservation
+concern and high species diversity.
+
+Single species conservation methods vs multiple species method,
+possibility of using both for taking decisions
+
 In the last decade, Occupancy modeling has been used more and more as a
 method to account for how species respond to environmental or
 anthropogenic factors. It has also been shown to be useful as a species
@@ -61,10 +92,10 @@ of conservation concern. Unfortunantely this decision usually comes
 without taking into account the effect of such management action on
 species diversity. There has been several authors championing for the
 use of species specific or diversity related approaches to plan
-conservation issues, but as far as we know this is the first method that
-takes into account both species diversity and individual species
-abundance in order to select conservation areas
-\citep{mackenzie_estimating_2002}.
+conservation issues, \citep{hill_beaver_1982, mackenzie_estimating_2002}
+but as far as we know this is the first method that takes into account
+both species diversity and individual species abundance in order to
+select conservation areas \citep{mackenzie_estimating_2002}.
 
 \subsection{Installing
 DiversityOccupancy}\label{installing-diversityoccupancy}
@@ -87,15 +118,7 @@ install.packages("DiversityOccupancy")
 
 \subsection{Objectives of the Package}\label{objectives-of-the-package}
 
-The objective of this package is to simultaneously model factors
-associated with occupancy and abundance of individual species using a
-detection history file, and to use predicted abundances to calculate
-species diversity for each sampling site. The package then models
-factor(s) associated with among-site species diversity, which can then
-be combined with spatial data to identify areas that contain both high
-abundance of species of conservation concern and high species diversity.
-
-\subsection{Use of the package}\label{use-of-the-package}
+\section{Use of the package}\label{use-of-the-package}
 
 In order to calculate abundance and alpha diversity we need at least
 three files:
@@ -147,20 +170,20 @@ head(sampling.cov)
 
 \begin{CodeChunk}
 \begin{CodeOutput}
-  Distance.to.water Distance.to.road Existing.vegetation Fire.Interval
-1                 0         325.2647            3.000000      14.79164
-2                 0           0.0000           15.294588      11.00000
-3                 0           0.0000            4.769200      16.00000
-4                 0           0.0000            4.705464      18.27010
-5                 0           0.0000           14.224747      14.97247
-6                 0        2308.6010           15.727460      15.81841
-  Altitude Burn.intensity.soil Burn.intensity.Canopy Burn.intensity.basal
-1 1859.337          0.00000000            0.00000000           0.00000000
-2 1839.813          0.24802029            0.12812701           0.12812701
-3 1890.586          0.00000000            0.00000000           0.00000000
-4 1927.237          0.00000000            0.00000000           0.00000000
-5 1682.559          3.42075635            3.84151252           5.30799686
-6 1515.009          0.01135227            0.01135223           0.01135223
+  Distance.to.water Distance.to.road Existing.vegetation Fire.Interval Altitude
+1                 0         325.2647            3.000000      14.79164 1859.337
+2                 0           0.0000           15.294588      11.00000 1839.813
+3                 0           0.0000            4.769200      16.00000 1890.586
+4                 0           0.0000            4.705464      18.27010 1927.237
+5                 0           0.0000           14.224747      14.97247 1682.559
+6                 0        2308.6010           15.727460      15.81841 1515.009
+  Burn.intensity.soil Burn.intensity.Canopy Burn.intensity.basal
+1          0.00000000            0.00000000           0.00000000
+2          0.24802029            0.12812701           0.12812701
+3          0.00000000            0.00000000           0.00000000
+4          0.00000000            0.00000000           0.00000000
+5          3.42075635            3.84151252           5.30799686
+6          0.01135227            0.01135223           0.01135223
 \end{CodeOutput}
 \end{CodeChunk}
 
@@ -181,8 +204,8 @@ illustrates how the Daily covariates have to be structured:
 names(Dailycov)
 \end{CodeInput}
 \begin{CodeOutput}
-[1] "Julian"   "Maxhum"   "Maxtemp"  "Meanhum"  "Meantemp" "Minhum"  
-[7] "Mintemp"  "sdhum"    "sdtemp"  
+[1] "Julian"   "Maxhum"   "Maxtemp"  "Meanhum"  "Meantemp" "Minhum"   "Mintemp" 
+[8] "sdhum"    "sdtemp"  
 \end{CodeOutput}
 \begin{CodeInput}
 #here we see the first dataframe of the Dailycov dataset
@@ -205,13 +228,12 @@ diversity}\label{fiting-models-for-abundance-and-predicting-alpha-diversity}
 In this example we will fit and model the abundance for 17 bat species
 and calculate alpha diversity from those results.
 
-\begin{CodeChunk}
-\begin{CodeInput}
-BatDiversity <-diversityoccu(pres = BatOccu, sitecov = sampling.cov, obscov =
-Dailycov,spp = 17, form = ~ Julian + Meanhum ~ Burn.intensity.soil +
-I(Burn.intensity.soil^2), dredge = FALSE)
-\end{CodeInput}
-\end{CodeChunk}
+\textbackslash{}begin\{CodeChunk\} \textbackslash{}begin\{CodeInput\}
+BatDiversity \textless{}-diversityoccu(pres = BatOccu, sitecov =
+sampling.cov, obscov = Dailycov,spp = 17, form = \textasciitilde{}
+Julian + Meanhum \textasciitilde{} Burn.intensity.soil +
+I(Burn.intensity.soil\^{}2), dredge = FALSE)
+\textbackslash{}end\{CodeInput\} \textbackslash{}end\{CodeChunk\}
 
 The resulting object of class diversityoccupancy has the following
 elements
@@ -261,41 +283,34 @@ The species parameter for a diversityoccupancy object shows us a table with the 
 summary(BatDiversity$species)
 \end{CodeInput}
 \begin{CodeOutput}
-       h           species.1        species.2       species.3     
- Min.   :2.115   Min.   :0.3528   Min.   :1.001   Min.   :0.1156  
- 1st Qu.:2.115   1st Qu.:0.3528   1st Qu.:1.001   1st Qu.:0.1156  
- Median :2.277   Median :0.5153   Median :1.300   Median :0.1883  
- Mean   :2.291   Mean   :0.7520   Mean   :1.523   Mean   :0.3401  
- 3rd Qu.:2.488   3rd Qu.:1.2428   3rd Qu.:2.045   3rd Qu.:0.6356  
- Max.   :2.553   Max.   :1.3027   Max.   :2.214   Max.   :0.6695  
-   species.4        species.5        species.6           species.7     
- Min.   :0.4802   Min.   :0.3020   Min.   :0.0000223   Min.   : 2.776  
- 1st Qu.:0.5504   1st Qu.:0.3020   1st Qu.:0.0000223   1st Qu.: 4.261  
- Median :0.5863   Median :0.5035   Median :0.0004349   Median : 6.424  
- Mean   :0.6125   Mean   :0.6907   Mean   :0.0983938   Mean   : 6.267  
- 3rd Qu.:0.5870   3rd Qu.:1.1210   3rd Qu.:0.1874298   3rd Qu.: 6.424  
- Max.   :0.8884   Max.   :1.2776   Max.   :0.3654810   Max.   :12.836  
-   species.8       species.9        species.10       species.11    
- Min.   :1.716   Min.   :0.1006   Min.   :0.3994   Min.   :0.5758  
- 1st Qu.:1.716   1st Qu.:0.2089   1st Qu.:0.5334   1st Qu.:0.5770  
- Median :2.035   Median :0.3037   Median :0.5334   Median :0.5816  
- Mean   :2.603   Mean   :0.4328   Mean   :1.5900   Mean   :0.8988  
- 3rd Qu.:3.584   3rd Qu.:0.3037   3rd Qu.:1.3059   3rd Qu.:1.0866  
- Max.   :4.150   Max.   :1.6148   Max.   :7.1212   Max.   :1.9802  
-   species.12       species.13      species.14      species.15    
- Min.   :0.3391   Min.   :1.638   Min.   :1.016   Min.   :0.1267  
- 1st Qu.:0.3391   1st Qu.:1.638   1st Qu.:1.239   1st Qu.:0.1267  
- Median :0.5080   Median :1.750   Median :1.360   Median :0.2016  
- Mean   :0.5584   Mean   :2.746   Mean   :1.472   Mean   :0.2653  
- 3rd Qu.:0.7826   3rd Qu.:3.533   3rd Qu.:1.369   3rd Qu.:0.4187  
- Max.   :0.9358   Max.   :6.038   Max.   :2.525   Max.   :0.4708  
-   species.16        species.17     
- Min.   : 0.7016   Min.   :0.06252  
- 1st Qu.: 0.7016   1st Qu.:0.06252  
- Median : 0.7636   Median :0.12145  
- Mean   : 2.9118   Mean   :0.36548  
- 3rd Qu.: 3.3637   3rd Qu.:0.74717  
- Max.   :11.9074   Max.   :0.90081  
+       h           species.1        species.2       species.3        species.4     
+ Min.   :2.115   Min.   :0.3528   Min.   :1.001   Min.   :0.1156   Min.   :0.4802  
+ 1st Qu.:2.115   1st Qu.:0.3528   1st Qu.:1.001   1st Qu.:0.1156   1st Qu.:0.5504  
+ Median :2.277   Median :0.5153   Median :1.300   Median :0.1883   Median :0.5863  
+ Mean   :2.291   Mean   :0.7520   Mean   :1.523   Mean   :0.3401   Mean   :0.6125  
+ 3rd Qu.:2.488   3rd Qu.:1.2428   3rd Qu.:2.045   3rd Qu.:0.6356   3rd Qu.:0.5870  
+ Max.   :2.553   Max.   :1.3027   Max.   :2.214   Max.   :0.6695   Max.   :0.8884  
+   species.5        species.6           species.7        species.8       species.9     
+ Min.   :0.3020   Min.   :0.0000223   Min.   : 2.776   Min.   :1.716   Min.   :0.1006  
+ 1st Qu.:0.3020   1st Qu.:0.0000223   1st Qu.: 4.261   1st Qu.:1.716   1st Qu.:0.2089  
+ Median :0.5035   Median :0.0004349   Median : 6.424   Median :2.035   Median :0.3037  
+ Mean   :0.6907   Mean   :0.0983938   Mean   : 6.267   Mean   :2.603   Mean   :0.4328  
+ 3rd Qu.:1.1210   3rd Qu.:0.1874298   3rd Qu.: 6.424   3rd Qu.:3.584   3rd Qu.:0.3037  
+ Max.   :1.2776   Max.   :0.3654810   Max.   :12.836   Max.   :4.150   Max.   :1.6148  
+   species.10       species.11       species.12       species.13      species.14   
+ Min.   :0.3994   Min.   :0.5758   Min.   :0.3391   Min.   :1.638   Min.   :1.016  
+ 1st Qu.:0.5334   1st Qu.:0.5770   1st Qu.:0.3391   1st Qu.:1.638   1st Qu.:1.239  
+ Median :0.5334   Median :0.5816   Median :0.5080   Median :1.750   Median :1.360  
+ Mean   :1.5900   Mean   :0.8988   Mean   :0.5584   Mean   :2.746   Mean   :1.472  
+ 3rd Qu.:1.3059   3rd Qu.:1.0866   3rd Qu.:0.7826   3rd Qu.:3.533   3rd Qu.:1.369  
+ Max.   :7.1212   Max.   :1.9802   Max.   :0.9358   Max.   :6.038   Max.   :2.525  
+   species.15       species.16        species.17     
+ Min.   :0.1267   Min.   : 0.7016   Min.   :0.06252  
+ 1st Qu.:0.1267   1st Qu.: 0.7016   1st Qu.:0.06252  
+ Median :0.2016   Median : 0.7636   Median :0.12145  
+ Mean   :0.2653   Mean   : 2.9118   Mean   :0.36548  
+ 3rd Qu.:0.4187   3rd Qu.: 3.3637   3rd Qu.:0.74717  
+ Max.   :0.4708   Max.   :11.9074   Max.   :0.90081  
 \end{CodeOutput}
 \end{CodeChunk}
 
@@ -309,21 +324,15 @@ increases with added numbers of parameters, and that processing can
 require many hours or days for complex data sets. The following graph
 and table shows the processing time for the BatOccu data set.
 
-\begin{CodeChunk}
-
-
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-12-1} \end{center}
-
-\end{CodeChunk}
-
 From now on we will work with automatically selected models for bat
 abundance and diversity using an information theoretic approach (AICc).
 
-\begin{CodeChunk}
-\begin{CodeInput}
-batmodel.selected <- diversityoccu(pres = BatOccu, sitecov = sampling.cov, obscov = Dailycov,spp = 17, form = ~ Julian + Meanhum ~ Burn.intensity.soil + I(Burn.intensity.soil^2), dredge = TRUE)
-\end{CodeInput}
-\end{CodeChunk}
+\textbackslash{}begin\{CodeChunk\} \textbackslash{}begin\{CodeInput\}
+batmodel.selected \textless{}- diversityoccu(pres = BatOccu, sitecov =
+sampling.cov, obscov = Dailycov,spp = 17, form = \textasciitilde{}
+Julian + Meanhum \textasciitilde{} Burn.intensity.soil +
+I(Burn.intensity.soil\^{}2), dredge = TRUE)
+\textbackslash{}end\{CodeInput\} \textbackslash{}end\{CodeChunk\}
 
 Below we present an example of an analysis with the full model (includes
 all variables) and subsequently results from a model selection analysis,
@@ -386,7 +395,7 @@ responseplot.abund(batmodel.selected, spp = 2, variable = Burn.intensity.soil)
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-15-1} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-16-1} \end{center}
 
 \end{CodeChunk}
 
@@ -404,7 +413,7 @@ information, gives a possibility to managers or decision makers wanting
 to use diversity with laws requiring them to take species into account.
 
 \renewcommand\refname{References}
-\bibliography{Derek.bib}
+\bibliography{Derek}
 
 
 \end{document}

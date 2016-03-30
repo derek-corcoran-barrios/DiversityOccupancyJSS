@@ -29,15 +29,31 @@ output:
 bibliography: Derek.bib
 ---
 
+
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library(rticles)
 library(rmarkdown)
 library(yaml)
 ```
 
+```{r, echo=FALSE}
+library(knitr)
+opts_chunk$set(prompt=TRUE)
+options(replace.assign=TRUE, width=90, prompt="R> ")
+```
 # Introduction
 
-In the last decade, Occupancy modeling has been used more and more as a method to account for how species respond to environmental or anthropogenic factors. It has also been shown to be useful as a species distribution modeling tool when species have imperfect detection. Anthore use for what it has been used is for managers to change the environment of managed areas in order to improve the status of species of conservation concern. Unfortunantely this decision usually comes without taking into account the effect of such management action on species diversity. There has been several authors championing for the use of species specific or diversity related approaches to plan conservation issues, but as far as we know this is the first method that takes into account both species diversity and individual species abundance in order to select conservation areas \citep{mackenzie_estimating_2002}.
+## Single-species or multiple-species management
+
+The ecological and management literature has usually valued the idea of managing for diversity. This, however clashes with the classic way in which conservation takes place. conservation agencies, goverments and scientists usually classify species according to a conservation status, and policies are made to safeward the ones that are envisioned as species of conservation concerned \citep{keller2004red}. Single species are easier to manage for, and it is easier to keep track the status of a specie than it is to define management for diversity, it is also more complicated to sample to keep track of changes in diversity.
+
+One of the problems of managing simple species, is that is usually very difficult to predict what will happend to other species and because of that it is hard to predict what will happend to diversity \citep{pulliam2000relationship}
+
+In this paper we present package \pkg{DiversityOccupancy}, used in the \proglang{R} environment, The objective of this package is to simultaneously model factors associated with occupancy and abundance of individual species using a detection history file, and to use predicted abundances to calculate species diversity for each sampling site. The package then models factor(s) associated with among-site species diversity, which can then be combined with spatial data to identify areas that contain both high abundance of species of conservation concern and high species diversity.
+
+Single species conservation methods vs multiple species method, possibility of using both for taking decisions
+
+In the last decade, Occupancy modeling has been used more and more as a method to account for how species respond to environmental or anthropogenic factors. It has also been shown to be useful as a species distribution modeling tool when species have imperfect detection. Anthore use for what it has been used is for managers to change the environment of managed areas in order to improve the status of species of conservation concern. Unfortunantely this decision usually comes without taking into account the effect of such management action on species diversity. There has been several authors championing for the use of species specific or diversity related approaches to plan conservation issues, \citep{hill_beaver_1982, mackenzie_estimating_2002} but as far as we know this is the first method that takes into account both species diversity and individual species abundance in order to select conservation areas \citep{mackenzie_estimating_2002}.
 
 ```{r, echo=FALSE, warning=FALSE, message=FALSE}
 library(knitr)
@@ -59,9 +75,8 @@ install.packages("DiversityOccupancy")
 
 ## Objectives of the Package
 
-The objective of this package is to simultaneously model factors associated with occupancy and abundance of individual species using a detection history file, and to use predicted abundances to calculate species diversity for each sampling site. The package then models factor(s) associated with among-site species diversity, which can then be combined with spatial data to identify areas that contain both high abundance of species of conservation concern and high species diversity.
 
-## Use of the package
+# Use of the package
 
 In order to calculate abundance and alpha diversity we need at least three files:
 
@@ -138,9 +153,9 @@ summary(BatDiversity$species)
 If the option of dredge is set to “TRUE”, then diversityoccu attempts to fit all first order models, and it selects the one with the lowest AICc value, for each species.  Be aware that processing times rapidly increases with added numbers of parameters, and that processing can require many hours or days for complex data sets.  The following graph and table shows the processing time for the BatOccu data set.
 
 ```{r, echo=FALSE, cache=TRUE, warning=FALSE, message=FALSE}
-time.comp<- read.csv("~/Documents/DiversityOccupancyQuickstart/Times.csv")
-library(ggplot2)
-ggplot(time.comp, aes(x = K, y = Time)) + geom_smooth() + geom_point()+ggtitle("Time taken for model selection") + labs(x = "Number of Parameters [K]" , y = "Processing time [seconds]") + theme_bw()
+#time.comp<- read.csv("~/Documents/DiversityOccupancyQuickstart/Times.csv")
+#library(ggplot2)
+#ggplot(time.comp, aes(x = K, y = Time)) + geom_smooth() + geom_point()+ggtitle("Time taken for model selection") + labs(x = "Number of Parameters [K]" , y = "Processing time [seconds]") + theme_bw()
 ```
 
 From now on we will work with automatically selected models for bat abundance and diversity using an information theoretic approach (AICc).

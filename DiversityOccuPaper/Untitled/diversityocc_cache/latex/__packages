@@ -10,3 +10,6 @@ ggplot2
 sp
 raster
 knitcitations
+rticles
+rmarkdown
+yaml
