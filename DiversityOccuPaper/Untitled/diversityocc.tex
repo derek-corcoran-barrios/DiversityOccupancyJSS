@@ -57,20 +57,25 @@ management}\label{single-species-or-multiple-species-management}
 The ecological and management literature has usually valued the idea of
 managing for diversity. This, however clashes with the classic way in
 which conservation takes place. Conservation agencies, goverments,
-scientists and international organizations such as IUCN, classify
-species according to a conservation status, and policies are made to
-safeward the ones that are envisioned as species of conservation
-concerned \citep{keller2004red, rodrigues2006value}. Single species are
-easier to manage for, and it is easier to keep track the status of a
-specie than it is to define management for diversity, it is also more
-complicated to sample to keep track of changes in diversity.
+scientists and international organizations such as International Union
+for Conservation of Nature (IUCN), classify species according to a
+conservation status, and policies are made to safeward the ones that are
+envisioned as species of conservation concerned
+\citep{keller2004red, rodrigues2006value}. Single species are easier to
+manage for, and it is easier to keep track the status of a species than
+it is to define management for diversity
+\citep{simberloff1998flagships}, it is also more complicated to sample
+to keep track of changes in diversity.
 
 There are several aproaches to design management meassures based on
 single species, such as using umbrella species
 \citep{crosby2015looking, bichet2016maintaining}, Habitat Suitability
-Indices \citep{zohmann2013modelling}. Even when the literature mostly
-criticizes the use of such aproaches due to the ineffectiveness in
-prevent loss of biodiversity
+Indices (HSI)
+\citep{reza2013integrating, soniat2013predicting, zohmann2013modelling},
+Species distribution modeling (SDM)
+\citep{peterson2011ecological, guisan2013predicting}. Even when the
+literature mostly criticizes the use of such aproaches due to the
+ineffectiveness in preventing loss of biodiversity
 \citep{roberge2004usefulness, branton2011assessing}
 
 One of the problems of managing simple species, is that is usually very
@@ -79,7 +84,25 @@ that it is hard to predict what will happend to diversity
 \citep{pulliam2000relationship}, with some examples showing that even
 management meassurements that use some species as umbrella species for
 conservation of ecosystems leading to undesired community effects
-\citep{white2013conservation}
+\citep{white2013conservation}.
+
+Managing for multiple-species, althought desirable, it has shown to be
+difficult to implement
+\citep{mollmann2014implementing, lmgren2015baltic}, most multimodel
+species only take into account only the number of species in an area,
+not accounting for how rare or common some species are, or they do not
+take into account the presence of some endangered species, since they
+are only trying to account for higher number of species, and not hteir
+identity
+\citep{taft2002waterbird, tori2002wetland, plaganyi2014multispecies}
+
+There are scenarios where a manager could want to manage for
+biodiversity, but in many countries, laws such as the Endangered Species
+Act in the United States or Canada's Species at Risk Act
+\citep{congress1973endangered, waples2013tale}, will require the manager
+or scientist to focus at the species level.The package presented in this
+article pretends to be a tool to change this either/or scenario and take
+information of both diversity and individual species models.
 
 In this paper we present package \pkg{DiversityOccupancy}, used in the
 \proglang{R} environment, The objective of this package is to
@@ -108,6 +131,33 @@ conservation issues, \citep{mackenzie_estimating_2002} but as far as we
 know this is the first method that takes into account both species
 diversity and individual species abundance in order to select
 conservation areas \citep{mackenzie_estimating_2002}.
+
+Occupancy models use detection-nondetection data from repeat surveys to
+simultaneously estimate probabilities of detection (p) and occupancy
+(psi) MacKenzie et al. 2006). Spatial correlation in occupancy results
+when points closer together have more similar occupancy than those
+farther apart. Approaches to occupancy modeling are increasingly
+accounting for spatial autocorrelation because failure to do so can
+result in bias and overestimated precision (Diniz-Filho et al. 2003,
+Johnson et al. 2013). We used the hierarchical spatial occupancy model
+approach of Johnson et al. (2013) because it is effective over large
+spatial extents, employs a probit mixture framework that resolves issues
+with multicollinearity and spatial confounding, and improves algorithm
+convergence. We followed the model-fitting process described in Broms et
+al. (2014) and first identified supported likelihood-based occupancy
+models and then used a hierarchical Bayesian approach to fit the
+supported models with and without spatial autocorrelation.\\
+We fit likelihood-based logistic regression occupancy models in the R
+statistical package unmarked to identify supported models because it
+permits an information-theoretic approach to model selection and
+inference (Burnham and Anderson 2002, Fiske and Chandler 2011). We
+standardized all continuous site covariates to mean 0 and unit variance
+to facilitate model convergence and facilitate comparisons among
+covariates. We determined that multicollinearity among candidate
+predictor variables was not an issue because no variance inflation
+factors were in a global logistic regression model. We considered models
+with a difference in Akaike's Information Criterion adjusted for sample
+size (AICc) as supported and considered them in the next step.
 
 \subsection{Installing
 DiversityOccupancy}\label{installing-diversityoccupancy}
