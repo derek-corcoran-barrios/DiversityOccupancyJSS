@@ -56,43 +56,43 @@ management}\label{single-species-or-multiple-species-management}
 
 The ecological and management literature has usually valued the idea of
 managing for diversity. This, however clashes with the classic way in
-which conservation takes place. Conservation agencies, goverments,
+which conservation takes place. Conservation agencies, governments,
 scientists and international organizations such as International Union
 for Conservation of Nature (IUCN), classify species according to a
-conservation status, and policies are made to safeward the ones that are
-envisioned as species of conservation concerned
+conservation status, and policies are made to safe-ward the ones that
+are envisioned as species of conservation concerned
 \citep{keller2004red, rodrigues2006value}. Single species are easier to
 manage for, and it is easier to keep track the status of a species than
 it is to define management for diversity
 \citep{simberloff1998flagships}, it is also more complicated to sample
 to keep track of changes in diversity.
 
-There are several aproaches to design management meassures based on
+There are several approaches to design management measures based on
 single species, such as using umbrella species
 \citep{crosby2015looking, bichet2016maintaining}, Habitat Suitability
 Indices (HSI)
 \citep{reza2013integrating, soniat2013predicting, zohmann2013modelling},
 Species distribution modeling (SDM)
 \citep{peterson2011ecological, guisan2013predicting}. Even when the
-literature mostly criticizes the use of such aproaches due to the
+literature mostly criticizes the use of such approaches due to the
 ineffectiveness in preventing loss of biodiversity
 \citep{roberge2004usefulness, branton2011assessing}
 
 One of the problems of managing simple species, is that is usually very
-difficult to predict what will happend to other species and because of
-that it is hard to predict what will happend to diversity
+difficult to predict what will happen to other species and because of
+that it is hard to predict what will happen to diversity
 \citep{pulliam2000relationship}, with some examples showing that even
-management meassurements that use some species as umbrella species for
+management measurements that use some species as umbrella species for
 conservation of ecosystems leading to undesired community effects
 \citep{white2013conservation}.
 
-Managing for multiple-species, althought desirable, it has shown to be
+Managing for multiple-species, although desirable, it has shown to be
 difficult to implement
 \citep{mollmann2014implementing, lmgren2015baltic}, most multimodel
 species only take into account only the number of species in an area,
 not accounting for how rare or common some species are, or they do not
 take into account the presence of some endangered species, since they
-are only trying to account for higher number of species, and not hteir
+are only trying to account for higher number of species, and not their
 identity
 \citep{taft2002waterbird, tori2002wetland, plaganyi2014multispecies}
 
@@ -121,36 +121,20 @@ In the last decade, Occupancy modeling has been used more and more as a
 method to account for how species respond to environmental or
 anthropogenic factors. It has also been shown to be useful as a species
 distribution modeling tool when species have imperfect detection.
-Anthore use for what it has been used is for managers to change the
+Another use for what it has been used is for managers to change the
 environment of managed areas in order to improve the status of species
-of conservation concern. Unfortunantely this decision usually comes
-without taking into account the effect of such management action on
-species diversity. There has been several authors championing for the
-use of species specific or diversity related approaches to plan
-conservation issues, \citep{mackenzie_estimating_2002} but as far as we
-know this is the first method that takes into account both species
+of conservation concern
+\citep{mackenzie_estimating_2002, mackenzie2006occupancy} but as far as
+we know this is the first method that takes into account both species
 diversity and individual species abundance in order to select
-conservation areas \citep{mackenzie_estimating_2002}.
+conservation areas.
 
 Occupancy models use detection-nondetection data from repeat surveys to
 simultaneously estimate probabilities of detection (p) and occupancy
-(psi) MacKenzie et al. 2006). Spatial correlation in occupancy results
-when points closer together have more similar occupancy than those
-farther apart. Approaches to occupancy modeling are increasingly
-accounting for spatial autocorrelation because failure to do so can
-result in bias and overestimated precision (Diniz-Filho et al. 2003,
-Johnson et al. 2013). We used the hierarchical spatial occupancy model
-approach of Johnson et al. (2013) because it is effective over large
-spatial extents, employs a probit mixture framework that resolves issues
-with multicollinearity and spatial confounding, and improves algorithm
-convergence. We followed the model-fitting process described in Broms et
-al. (2014) and first identified supported likelihood-based occupancy
-models and then used a hierarchical Bayesian approach to fit the
-supported models with and without spatial autocorrelation.\\
-We fit likelihood-based logistic regression occupancy models in the R
-statistical package unmarked to identify supported models because it
-permits an information-theoretic approach to model selection and
-inference (Burnham and Anderson 2002, Fiske and Chandler 2011). We
+(psi) \citep{mackenzie2006occupancy}. We fit likelihood-based logistic
+regression occupancy models in the R statistical package unmarked to
+identify supported models because it permits an information-theoretic
+approach to model selection and inference citep\{burnham2003model\}. We
 standardized all continuous site covariates to mean 0 and unit variance
 to facilitate model convergence and facilitate comparisons among
 covariates. We determined that multicollinearity among candidate
@@ -446,7 +430,7 @@ AIC: 177.0765
 \end{CodeChunk}
 
 The responses of individual species to specific variables can be shown
-using the function respnseplot.abund, bellow we show the response of
+using the function responseplot.abund, bellow we show the response of
 abundance in species 2 to the Burn intensity soil. Note that this
 function automatically bounds the limits of the variable to the maximum
 and minimum observable values in the field.
@@ -467,7 +451,7 @@ modeling}\label{model-selection-for-alpha-diversity-modeling}
 \section{Discussion}\label{discussion}
 
 The \pkg{DiversityOccupancy} package lets scientists and managers take
-dessitions based on species information, diversity information or both.
+decisions based on species information, diversity information or both.
 In some countries, laws require that the decision is taken based on
 endangered species information, the possibility on selecting an area, or
 manage environments based on both diversity and species specific
