@@ -1,0 +1,182 @@
+---
+title: "DiversityOccupancy Quickstart"
+subtitle: "Selecting priority areas from Diversity and individual species abundance"
+author: "Derek Corcoran"
+date: "`r Sys.Date()`"
+output: html_document
+bibliography: ~/Documents/DiversityOccupancyQuickstart/Derek.bib
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(knitr)
+```
+
+##Installing DiversityOccupancy
+
+###Requirements
+
+To use this package you need R version 3.2.2 or newer (use the function sessionInfo() in your R session to check your current version).
+
+###Installing the package
+
+Install from cran repository
+
+```{r, echo=TRUE, eval=FALSE}
+install.packages("DiversityOccupancy")
+```
+
+##Objectives of the Package
+
+The objective of this package is to simultaneously model factors associated with occupancy and abundance of individual species using a detection history file, and to use predicted abundances to calculate species diversity for each sampling site. The package then models factor(s) associated with among-site species diversity, which can then be combined with spatial data to identify areas that contain both high abundance of species of conservation concern and high species diversity.
+
+##Use of the package
+
+In order to calculate abundance and alpha diversity we need at least three files:
+
+####Detection history of multiple species
+
+A data frame consisting on the detection history of at least two species.  As an example *DiversityOccupancy* has the dataset BatOccu which contains detection histories of 17 species of bats in the Plumas National Forest for 3 consecutive days (Columns) in 49 different sites (Rows). The data set includes a 1 for each time a species was detected, and a 0 for each time it was not detected.
+
+A detection for the first three species is presented below:
+
+```{r, echo=TRUE}
+library(DiversityOccupancy)
+data("BatOccu")
+kable(head(BatOccu[1:9]))
+```
+
+####Site covariates
+
+Site covariates are presented in a data frame consisting of measurements taken at each site. The covariates are used singly and in combination to model occupancy or abundanc, and they should be variables that are stable within the scope of the length of the study. In *DiversityOccupancy* there is an example concordant with the BatOccu dataset called sampling.cov:
+
+```{r, echo=TRUE, eval=FALSE}
+data("sampling.cov")
+head(sampling.cov)
+```
+
+```{r, echo=FALSE}
+data("sampling.cov")
+kable(head(sampling.cov))
+```
+
+####Detection covariates
+
+A list of data frames, in which each data frame includes a daily measurement of variables with the potential to affect detection probabilities. It is important that each element (data frame) of the list has a name, so that it can be called to fit the occupancy model. These variables are used to model the probability of detection.
+
+*DiversityOccupancy* has a dataset called *Dailycov* which ilustrates how the Daily covariates have to be structured:
+
+```{r, echo=TRUE}
+#All the items of the ist must have names
+names(Dailycov)
+#here we see the first dataframe of the Dailycov dataset
+head(Dailycov[[1]])
+```
+
+##Fiting models for abundance and predicting alpha diversity
+
+In this example we will fit and model the abundance for 17 bat species and calculate alpha diversity from those results.
+
+```{r, echo=TRUE, cache=TRUE, message=FALSE, warning=FALSE}
+BatDiversity <-diversityoccu(pres = BatOccu, sitecov = sampling.cov, obscov = Dailycov,spp = 17, form = ~ Julian + Meanhum ~ Burn.intensity.soil + I(Burn.intensity.soil^2), dredge = FALSE)
+```
+
+The resulting object of class diversityoccupancy has the following elements
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+names(BatDiversity)
+```
+
+If you need to see the parameters of the model of one of the species, you call the species number with the element$models. For example extract the model for the second species:
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE}
+BatDiversity$models[[2]]
+```
+
+The Best.model parameter for a diversityoccupancy object shows us a table with the abundance and alpha diversity calculated for each sampled point:
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, eval=FALSE}
+BatDiversity$Best.model
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+kable(BatDiversity$Best.model)
+```
+
+##Automatic model selection for abundance
+
+If the option of dredge is set to “TRUE”, then diversityoccu attempts to fit all first order models, and it selects the one with the lowest AICc value, for each species.  Be aware that processing times rapidly increases with added numbers of parameters, and that processing can require many hours or days for complex data sets.  The following graph and table shows the processing time for the BatOccu dataset.
+
+```{r, echo=FALSE, cache=TRUE, warning=FALSE, message=FALSE}
+time.comp<- read.csv("~/Documents/DiversityOccupancyQuickstart/Times.csv")
+library(ggplot2)
+ggplot(time.comp, aes(x = K, y = Time)) + geom_smooth() + geom_point()+ggtitle("Time taken for model selection") + labs(x = "Number of Parameters [K]" , y = "Processing time [seconds]") + theme_bw()
+```
+
+From now on we will work with automatically selected models for bat abundance and diversity using an information theoretic approach (AICc).
+
+```{r,echo=TRUE, cache=TRUE, warning=FALSE, message=FALSE, eval=TRUE}
+batmodel.selected <- diversityoccu(pres = BatOccu, sitecov = sampling.cov, obscov = Dailycov,spp = 17, form = ~ Julian + Meanhum ~ Burn.intensity.soil + I(Burn.intensity.soil^2), dredge = TRUE)
+```
+
+Below we present an example of an analysis with the full model (includes all variables) and subsequently results from a model selection analysis, both of them only for the second species:
+
+```{r, warning=FALSE, message=FALSE}
+BatDiversity$models[[2]]
+batmodel.selected$models[[2]]
+```
+
+##Model selection for alpha diversity modeling
+
+The next step is to select the best model for predicting alpha diversity using the model.diversity function.  The function takes a diversityoccupancy object, and fits all possible glm models and ranks them by AICc. Other than the diversityoccupancy object, there are three other parameters to select: 1) Method, which can be either “h” which fits every possible model, or “g”, which uses genetic algorithms to select models (recommended for large candidate sets); 2) Delta, which allows the user to identify an AICc delta threshold, which returns all models with AICc values below the threshold; 3) Squared, which includes only linear combinations when set to FALSE (Default), and both linear and quadratic (second order) if set to TRUE.
+
+```{r, warning=FALSE, message=FALSE, results='hide', cache=TRUE}
+glm.Batdiverse <- model.diversity(batmodel.selected, method = "g", delta = 2, squared = TRUE)
+```
+
+To see the top models extract the Table element of the modelselection object
+
+```{r, echo=TRUE, eval=FALSE}
+glm.Batdiverse$Table
+```
+
+```{r, echo=FALSE}
+kable(glm.Batdiverse$Table)
+```
+
+The responseplot.diver function takes a modeldiversity object and one of the variables used to predict the alpha diversity index, and makes a plot showing the response of the diversity index against the selected variable. This function automatically limits the values of that variable to the maximum and minimum values of the dataset. It also shows the standard deviation of the estimation.
+
+```{r, echo=TRUE}
+responseplot.diver(glm.Batdiverse, Burn.intensity.soil)
+```
+
+Also since the returned plot is a ggplot type object, it can be easily modified following ggplot2 grammar of graphics.
+
+```{r, echo=TRUE}
+library(ggplot2)
+k <- responseplot.diver(glm.Batdiverse, Burn.intensity.soil)
+k
+k + theme_dark()
+k + ylim(c(0,3))
+```
+
+##Selecting conservation areas based on alpha diversity and abundance of species of conservation concern
+
+Of the 17 species modeled, there are at least three of conservation concern, pallid bat (*Antrozous pallidus*), corresponding to species 9th of our list.
+Since we already have models relating site characteristics to species abundance and a model relating site characteristics to alpha diversity, with the use of a spatial raster layers (rasterstack) with the modeled variables we can choose an area with high species diversity and/or abundance.
+
+```{r}
+library(raster)
+data(plumas.stack)
+plot(plumas.stack)
+```
+
+In order to find areas of high conservation value, we use the predict.diversity function. We need both a diversityoccupancy and a modeldiversity class object, used in the model, and diverse parameters respectfully, a spatial representation of site covariates as raster files (rasterstack), with the variables in the new.data parameter, a boolean vector in the species parameter indicating which species shall be considered (T or F), and the quantile.nth parameter, which indicates a quantile threshold that is used for abundance and/or richness to indicate conservation value (areas above the threshold will be returned).
+
+```{r, cache=TRUE, warning=FALSE, message=FALSE, results='hide', echo=TRUE}
+Selected.area <- diversity.predict(model = batmodel.selected, diverse = glm.Batdiverse, new.data = plumas.stack, quantile.nth = 0.65, species =
+c(F,F,F,F,F,F,F,F,T,F,F,F,F,F,F,F,F))
+```
+
+This function automatically creates a KMZ file that will be stored in the home directory of your session [@westerling_climate_2008] .
+
+## References

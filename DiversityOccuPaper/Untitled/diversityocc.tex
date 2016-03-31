@@ -60,22 +60,22 @@ which conservation takes place. Conservation agencies, governments,
 scientists and international organizations such as International Union
 for Conservation of Nature (IUCN), classify species according to a
 conservation status, and policies are made to safe-ward the ones that
-are envisioned as species of conservation concerned
+are envisioned as species of conservation concern
 \citep{keller2004red, rodrigues2006value}. Single species are easier to
 manage for, and it is easier to keep track the status of a species than
 it is to define management for diversity
 \citep{simberloff1998flagships}, it is also more complicated to sample
-to keep track of changes in diversity.
+and keep track of changes in diversity.
 
 There are several approaches to design management measures based on
 single species, such as using umbrella species
 \citep{crosby2015looking, bichet2016maintaining}, Habitat Suitability
 Indices (HSI)
-\citep{reza2013integrating, soniat2013predicting, zohmann2013modelling},
-Species distribution modeling (SDM)
-\citep{peterson2011ecological, guisan2013predicting}. Even when the
-literature mostly criticizes the use of such approaches due to the
-ineffectiveness in preventing loss of biodiversity
+\citep{reza2013integrating, soniat2013predicting, zohmann2013modelling}
+and Species distribution modeling (SDM)
+\citep{peterson2011ecological, guisan2013predicting} among others. Even
+when the literature mostly criticizes the use of such approaches due to
+the ineffectiveness in preventing loss of biodiversity
 \citep{roberge2004usefulness, branton2011assessing}
 
 One of the problems of managing simple species, is that is usually very
@@ -114,9 +114,6 @@ diversity, which can then be combined with spatial data to identify
 areas that contain both high abundance of species of conservation
 concern and high species diversity.
 
-Single species conservation methods vs multiple species method,
-possibility of using both for taking decisions
-
 In the last decade, Occupancy modeling has been used more and more as a
 method to account for how species respond to environmental or
 anthropogenic factors. It has also been shown to be useful as a species
@@ -131,17 +128,8 @@ conservation areas.
 
 Occupancy models use detection-nondetection data from repeat surveys to
 simultaneously estimate probabilities of detection (p) and occupancy
-(psi) \citep{mackenzie2006occupancy}. We fit likelihood-based logistic
-regression occupancy models in the R statistical package unmarked to
-identify supported models because it permits an information-theoretic
-approach to model selection and inference citep\{burnham2003model\}. We
-standardized all continuous site covariates to mean 0 and unit variance
-to facilitate model convergence and facilitate comparisons among
-covariates. We determined that multicollinearity among candidate
-predictor variables was not an issue because no variance inflation
-factors were in a global logistic regression model. We considered models
-with a difference in Akaike's Information Criterion adjusted for sample
-size (AICc) as supported and considered them in the next step.
+(psi) \citep{mackenzie2006occupancy}. \citep{burnham2003model}. We
+standardized all continuous site covariates t
 
 \subsection{Installing
 DiversityOccupancy}\label{installing-diversityoccupancy}
@@ -370,6 +358,13 @@ increases with added numbers of parameters, and that processing can
 require many hours or days for complex data sets. The following graph
 and table shows the processing time for the BatOccu data set.
 
+\begin{CodeChunk}
+
+
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-13-1} \end{center}
+
+\end{CodeChunk}
+
 From now on we will work with automatically selected models for bat
 abundance and diversity using an information theoretic approach (AICc).
 
@@ -447,6 +442,155 @@ responseplot.abund(batmodel.selected, spp = 2, variable = Burn.intensity.soil)
 
 \subsection{Model selection for alpha diversity
 modeling}\label{model-selection-for-alpha-diversity-modeling}
+
+The next step is to select the best model for predicting alpha diversity
+using the model.diversity function. The function takes a
+diversityoccupancy object, and fits all possible glm models and ranks
+them by AICc. Other than the diversityoccupancy object, there are three
+other parameters to select: 1) Method, which can be either ``h'' which
+fits every possible model, or ``g'', which uses genetic algorithms to
+select models (recommended for large candidate sets); 2) Delta, which
+allows the user to identify an AICc delta threshold, which returns all
+models with AICc values below the threshold; 3) Squared, which includes
+only linear combinations when set to FALSE (Default), and both linear
+and quadratic (second order) if set to TRUE.
+
+\begin{CodeChunk}
+\begin{CodeInput}
+glm.Batdiverse <- model.diversity(batmodel.selected, method = "g", delta = 2,
+squared = TRUE)
+\end{CodeInput}
+\end{CodeChunk}
+
+To see the top models extract the Table element of the modelselection
+object
+
+\textbackslash{}begin\{CodeChunk\} \textbackslash{}begin\{CodeInput\}
+class(glm.Batdiverse\$Table) \textbackslash{}end\{CodeInput\}
+
+\begin{CodeOutput}
+[1] "data.frame"
+\end{CodeOutput}
+
+\textbackslash{}end\{CodeChunk\}
+
+The responseplot.diver function takes a modeldiversity object and one of
+the variables used to predict the alpha diversity index, and makes a
+plot showing the response of the diversity index against the selected
+variable. This function automatically limits the values of that variable
+to the maximum and minimum values of the dataset. It also shows the
+standard deviation of the estimation.
+
+\begin{CodeChunk}
+\begin{CodeInput}
+responseplot.diver(glm.Batdiverse, Burn.intensity.soil)
+\end{CodeInput}
+
+
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-19-1} \end{center}
+
+\end{CodeChunk}
+
+Also since the returned plot is a ggplot type object, it can be easily
+modified following ggplot2 grammar of graphics.
+
+\begin{CodeChunk}
+\begin{CodeInput}
+library(ggplot2)
+k <- responseplot.diver(glm.Batdiverse, Burn.intensity.soil)
+k
+\end{CodeInput}
+
+
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-20-1} \end{center}
+
+\begin{CodeInput}
+k + geom_line(color = "red")
+\end{CodeInput}
+
+
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-20-2} \end{center}
+
+\begin{CodeInput}
+k + ylim(c(0,3))
+\end{CodeInput}
+
+
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-20-3} \end{center}
+
+\end{CodeChunk}
+
+\subsection{Selecting conservation areas based on alpha diversity and
+abundance of species of conservation
+concern}\label{selecting-conservation-areas-based-on-alpha-diversity-and-abundance-of-species-of-conservation-concern}
+
+Of the 17 species modeled, there are at least three of conservation
+concern, pallid bat (\emph{Antrozous pallidus}), corresponding to
+species 9th of our list. Since we already have models relating site
+characteristics to species abundance and a model relating site
+characteristics to alpha diversity, with the use of a spatial raster
+layers (rasterstack) with the modeled variables we can choose an area
+with high species diversity and/or abundance.
+
+\begin{CodeChunk}
+\begin{CodeInput}
+library(raster)
+\end{CodeInput}
+\begin{CodeOutput}
+Loading required package: sp
+\end{CodeOutput}
+\begin{CodeOutput}
+
+Attaching package: 'sp'
+\end{CodeOutput}
+\begin{CodeOutput}
+The following object is masked from 'package:unmarked':
+
+    coordinates
+\end{CodeOutput}
+\begin{CodeOutput}
+
+Attaching package: 'raster'
+\end{CodeOutput}
+\begin{CodeOutput}
+The following objects are masked from 'package:unmarked':
+
+    getData, projection
+\end{CodeOutput}
+\begin{CodeInput}
+data(plumas.stack)
+plot(plumas.stack)
+\end{CodeInput}
+
+
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-21-1} \end{center}
+
+\end{CodeChunk}
+
+In order to find areas of high conservation value, we use the
+predict.diversity function. We need both a diversityoccupancy and a
+modeldiversity class object, used in the model, and diverse parameters
+respectfully, a spatial representation of site covariates as raster
+files (rasterstack), with the variables in the new.data parameter, a
+boolean vector in the species parameter indicating which species shall
+be considered (T or F), and the quantile.nth parameter, which indicates
+a quantile threshold that is used for abundance and/or richness to
+indicate conservation value (areas above the threshold will be
+returned).
+
+\begin{CodeChunk}
+\begin{CodeInput}
+Selected.area <- diversity.predict(model = batmodel.selected, diverse = glm.Batdiverse, new.data = plumas.stack, quantile.nth = 0.65, species =
+c(F,F,F,F,F,F,F,F,T,F,F,F,F,F,F,F,F))
+\end{CodeInput}
+
+
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-22-1} \end{center}
+
+\end{CodeChunk}
+
+This function automatically creates a KMZ file that will be stored in
+the home directory of your session
 
 \section{Discussion}\label{discussion}
 
