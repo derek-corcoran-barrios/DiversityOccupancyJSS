@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2015.11.9)  31 MAR 2016 22:00
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (MiKTeX 2.9) (preloaded format=pdflatex 2015.11.9)  12 MAY 2016 15:38
 entering extended mode
 **diversityocc.tex
 (diversityocc.tex
@@ -701,13 +701,16 @@ LaTeX Font Info:    Font shape `T1/pzc/m/n' in size <28> not available
 LaTeX Font Info:    Try loading font information for T1+aess on input line 50.
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\ae\t1aess.fd"
 File: t1aess.fd 1997/11/16 Font definitions for T1/aess.
-) [1
+)
+Underfull \vbox (badness 2818) has occurred while \output is active []
+
+[1
 
 {C:/Users/corcoranbarriosd/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map} <
 ./jsslogo.jpg>]
 
 Package natbib Warning: Citation `lmgren2015baltic' on page 2 undefined on inpu
-t line 91.
+t line 93.
 
 
 Underfull \vbox (badness 1810) has occurred while \output is active []
@@ -720,7 +723,7 @@ Overfull \hbox (5.47499pt too wide) has occurred while \output is active
  []
 
 [2]
-LaTeX Font Info:    Try loading font information for T1+aett on input line 140.
+LaTeX Font Info:    Try loading font information for T1+aett on input line 142.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\ae\t1aett.fd"
 File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
@@ -730,12 +733,6 @@ Overfull \hbox (5.47499pt too wide) has occurred while \output is active
  []
 
 [3]
-Overfull \hbox (19.94891pt too wide) in paragraph at lines 265--271
-\T1/aer/m/n/10.95 cov = sam-pling.cov, ob-scov = Dai-ly-cov,spp = 17, form = ~ 
-Ju-lian + Mean-hum ~ Burn.intensity.soil
- []
-
-
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 \T1/aer/m/n/10.95 4 []
  []
@@ -752,135 +749,138 @@ File: diversityocc_files/figure-latex/unnamed-chunk-13-1.pdf Graphic file (type
  pdf)
 <use diversityocc_files/figure-latex/unnamed-chunk-13-1.pdf>
 Package pdftex.def Info: diversityocc_files/figure-latex/unnamed-chunk-13-1.pdf
- used on input line 364.
+ used on input line 350.
 (pdftex.def)             Requested size: 354.12434pt x 265.59586pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
 
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 \T1/aer/m/n/10.95 6 []
  []
 
-[6]
-Overfull \hbox (36.40636pt too wide) in paragraph at lines 371--377
-\T1/aer/m/n/10.95 site-cov = sam-pling.cov, ob-scov = Dai-ly-cov,spp = 17, form
- = ~ Ju-lian + Mean-hum ~ Burn.intensity.soil
- []
-
-
-Overfull \hbox (5.47499pt too wide) has occurred while \output is active
-[] \T1/aer/m/n/10.95 7
- []
-
-[7 <./diversityocc_files/figure-latex/unnamed-chunk-13-1.pdf>]
-<diversityocc_files/figure-latex/unnamed-chunk-16-1.pdf, id=196, 353.32pt x 264
+[6 <./diversityocc_files/figure-latex/unnamed-chunk-13-1.pdf>]
+<diversityocc_files/figure-latex/unnamed-chunk-16-1.pdf, id=191, 353.32pt x 264
 .99pt>
 File: diversityocc_files/figure-latex/unnamed-chunk-16-1.pdf Graphic file (type
  pdf)
 <use diversityocc_files/figure-latex/unnamed-chunk-16-1.pdf>
 Package pdftex.def Info: diversityocc_files/figure-latex/unnamed-chunk-16-1.pdf
- used on input line 439.
+ used on input line 428.
 (pdftex.def)             Requested size: 354.12434pt x 265.59586pt.
+
+Overfull \hbox (5.47499pt too wide) has occurred while \output is active
+[] \T1/aer/m/n/10.95 7
+ []
+
+[7]
+Overfull \hbox (1.1309pt too wide) in paragraph at lines 435--446
+[]\T1/aer/m/n/10.95 The next step is to se-lect the best model for pre-dict-ing
+ al-pha di-ver-sity us-ing the model.diversity
+ []
+
+
+Overfull \hbox (38.92357pt too wide) in paragraph at lines 457--472
+\T1/aer/m/n/10.95 680.4609 0.1632999 0.9383094 5 -680.3701 0.1560568 1.0290469 
+\end{CodeOutput} \end{CodeChunk} 
+ []
+
 
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 \T1/aer/m/n/10.95 8 []
  []
 
 [8 <./diversityocc_files/figure-latex/unnamed-chunk-16-1.pdf>]
-Overfull \hbox (1.1309pt too wide) in paragraph at lines 446--457
-[]\T1/aer/m/n/10.95 The next step is to se-lect the best model for pre-dict-ing
- al-pha di-ver-sity us-ing the model.diversity
- []
-
-
-<diversityocc_files/figure-latex/unnamed-chunk-19-1.pdf, id=206, 353.32pt x 264
+<diversityocc_files/figure-latex/unnamed-chunk-19-1.pdf, id=208, 353.32pt x 264
 .99pt>
 File: diversityocc_files/figure-latex/unnamed-chunk-19-1.pdf Graphic file (type
  pdf)
 <use diversityocc_files/figure-latex/unnamed-chunk-19-1.pdf>
 Package pdftex.def Info: diversityocc_files/figure-latex/unnamed-chunk-19-1.pdf
- used on input line 490.
+ used on input line 486.
 (pdftex.def)             Requested size: 354.12434pt x 265.59586pt.
+
+<diversityocc_files/figure-latex/unnamed-chunk-20-1.pdf, id=209, 353.32pt x 264
+.99pt>
+File: diversityocc_files/figure-latex/unnamed-chunk-20-1.pdf Graphic file (type
+ pdf)
+<use diversityocc_files/figure-latex/unnamed-chunk-20-1.pdf>
+Package pdftex.def Info: diversityocc_files/figure-latex/unnamed-chunk-20-1.pdf
+ used on input line 501.
+(pdftex.def)             Requested size: 354.12434pt x 265.59586pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 [] \T1/aer/m/n/10.95 9
  []
 
 [9 <./diversityocc_files/figure-latex/unnamed-chunk-19-1.pdf>]
-<diversityocc_files/figure-latex/unnamed-chunk-20-1.pdf, id=217, 353.32pt x 264
-.99pt>
-File: diversityocc_files/figure-latex/unnamed-chunk-20-1.pdf Graphic file (type
- pdf)
-<use diversityocc_files/figure-latex/unnamed-chunk-20-1.pdf>
-Package pdftex.def Info: diversityocc_files/figure-latex/unnamed-chunk-20-1.pdf
- used on input line 505.
-(pdftex.def)             Requested size: 354.12434pt x 265.59586pt.
-
-<diversityocc_files/figure-latex/unnamed-chunk-20-2.pdf, id=218, 353.32pt x 264
+<diversityocc_files/figure-latex/unnamed-chunk-20-2.pdf, id=219, 353.32pt x 264
 .99pt>
 File: diversityocc_files/figure-latex/unnamed-chunk-20-2.pdf Graphic file (type
  pdf)
 <use diversityocc_files/figure-latex/unnamed-chunk-20-2.pdf>
 Package pdftex.def Info: diversityocc_files/figure-latex/unnamed-chunk-20-2.pdf
- used on input line 512.
+ used on input line 508.
 (pdftex.def)             Requested size: 354.12434pt x 265.59586pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
-
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-\T1/aer/m/n/10.95 10 []
- []
-
-[10 <./diversityocc_files/figure-latex/unnamed-chunk-20-1.pdf>]
-<diversityocc_files/figure-latex/unnamed-chunk-20-3.pdf, id=228, 353.32pt x 264
+<diversityocc_files/figure-latex/unnamed-chunk-20-3.pdf, id=220, 353.32pt x 264
 .99pt>
 File: diversityocc_files/figure-latex/unnamed-chunk-20-3.pdf Graphic file (type
  pdf)
 <use diversityocc_files/figure-latex/unnamed-chunk-20-3.pdf>
 Package pdftex.def Info: diversityocc_files/figure-latex/unnamed-chunk-20-3.pdf
- used on input line 519.
+ used on input line 515.
 (pdftex.def)             Requested size: 354.12434pt x 265.59586pt.
+
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+\T1/aer/m/n/10.95 10 []
+ []
+
+[10 <./diversityocc_files/figure-latex/unnamed-chunk-20-1.pdf> <./diversityocc_
+files/figure-latex/unnamed-chunk-20-2.pdf>]
+LaTeX Font Info:    Try loading font information for TS1+aett on input line 541
+.
+LaTeX Font Info:    No file TS1aett.fd. on input line 541.
+
+LaTeX Font Warning: Font shape `TS1/aett/m/n' undefined
+(Font)              using `TS1/cmr/m/n' instead
+(Font)              for symbol `textquotesingle' on input line 541.
+
 
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [] \T1/aer/m/n/10.95 11
  []
 
-[11 <./diversityocc_files/figure-latex/unnamed-chunk-20-2.pdf> <./diversityocc_
-files/figure-latex/unnamed-chunk-20-3.pdf>]
-LaTeX Font Info:    Try loading font information for TS1+aett on input line 544
-.
-LaTeX Font Info:    No file TS1aett.fd. on input line 544.
-
-LaTeX Font Warning: Font shape `TS1/aett/m/n' undefined
-(Font)              using `TS1/cmr/m/n' instead
-(Font)              for symbol `textquotesingle' on input line 544.
-
-
-<diversityocc_files/figure-latex/unnamed-chunk-21-1.pdf, id=244, 353.32pt x 264
+[11 <./diversityocc_files/figure-latex/unnamed-chunk-20-3.pdf>]
+<diversityocc_files/figure-latex/unnamed-chunk-21-1.pdf, id=246, 353.32pt x 264
 .99pt>
 File: diversityocc_files/figure-latex/unnamed-chunk-21-1.pdf Graphic file (type
  pdf)
 <use diversityocc_files/figure-latex/unnamed-chunk-21-1.pdf>
 Package pdftex.def Info: diversityocc_files/figure-latex/unnamed-chunk-21-1.pdf
- used on input line 566.
+ used on input line 563.
+(pdftex.def)             Requested size: 354.12434pt x 265.59586pt.
+
+LaTeX Font Warning: Font shape `TS1/aett/m/sl' undefined
+(Font)              using `TS1/aett/m/n' instead
+(Font)              for symbol `textquotesingle' on input line 566.
+
+
+<diversityocc_files/figure-latex/unnamed-chunk-22-1.pdf, id=247, 353.32pt x 264
+.99pt>
+File: diversityocc_files/figure-latex/unnamed-chunk-22-1.pdf Graphic file (type
+ pdf)
+<use diversityocc_files/figure-latex/unnamed-chunk-22-1.pdf>
+Package pdftex.def Info: diversityocc_files/figure-latex/unnamed-chunk-22-1.pdf
+ used on input line 602.
 (pdftex.def)             Requested size: 354.12434pt x 265.59586pt.
 
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 \T1/aer/m/n/10.95 12 []
  []
 
-[12 <./diversityocc_files/figure-latex/unnamed-chunk-21-1.pdf>]
-<diversityocc_files/figure-latex/unnamed-chunk-22-1.pdf, id=281, 353.32pt x 264
-.99pt>
-File: diversityocc_files/figure-latex/unnamed-chunk-22-1.pdf Graphic file (type
- pdf)
-<use diversityocc_files/figure-latex/unnamed-chunk-22-1.pdf>
-Package pdftex.def Info: diversityocc_files/figure-latex/unnamed-chunk-22-1.pdf
- used on input line 588.
-(pdftex.def)             Requested size: 354.12434pt x 265.59586pt.
-(diversityocc.bbl
+[12 <./diversityocc_files/figure-latex/unnamed-chunk-21-1.pdf>] (diversityocc.b
+bl
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [] \T1/aer/m/n/10.95 13
  []
@@ -895,23 +895,23 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 Package natbib Warning: There were undefined citations.
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 609--609
+Underfull \hbox (badness 10000) in paragraph at lines 617--617
 
  []
 
 LaTeX Font Info:    Font shape `T1/pzc/m/n' in size <13> not available
-(Font)              Font shape `T1/pzc/mb/it' tried instead on input line 609.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 609.
+(Font)              Font shape `T1/pzc/mb/it' tried instead on input line 617.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 617.
 
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [] \T1/aer/m/n/10.95 15
  []
 
 [15]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 609.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 617.
 (diversityocc.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 609.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 609.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 617.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 617.
 Package rerunfilecheck Info: File `diversityocc.out' has not changed.
 (rerunfilecheck)             Checksum: 856C36B7650D8D770D6CF9041A135AF9;1656.
 
@@ -920,35 +920,34 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 609.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 617.
  ) 
 Here is how much of TeX's memory you used:
- 7740 strings out of 493673
- 113406 string characters out of 3141497
- 196553 words of memory out of 3000000
- 10855 multiletter control sequences out of 15000+200000
+ 7742 strings out of 493673
+ 113438 string characters out of 3141497
+ 196546 words of memory out of 3000000
+ 10857 multiletter control sequences out of 15000+200000
  56609 words of font info for 99 fonts, out of 3000000 for 9000
  1025 hyphenation exceptions out of 8191
- 36i,9n,34p,435b,470s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,9n,34p,435b,488s stack positions out of 5000i,500n,10000p,200000b,50000s
  <C:\Users\corcoranbarriosd\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen
 \ec\dpi600\tcrm1095.pk>{C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/fontn
 ame/8r.enc}<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
 b10.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx1
 0.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.
 pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbxsl10.
-pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pf
-b><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><
-C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><C:
-/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsltt10.pfb><C:
-/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmss10.pfb><C:/P
-rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Pro
-gram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Progr
-am Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Program
- Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program F
-iles (x86)/MiKTeX 2.9/fonts/type1/urw/zapfchan/uzcmi8a.pfb>
-Output written on diversityocc.pdf (15 pages, 492187 bytes).
+pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb
+><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsl10.pfb><
+C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsltt10.pfb><
+C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmss10.pfb><C:
+/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/P
+rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb><C:/Pro
+gram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti12.pfb><C:/Progr
+am Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program
+ Files (x86)/MiKTeX 2.9/fonts/type1/urw/zapfchan/uzcmi8a.pfb>
+Output written on diversityocc.pdf (15 pages, 493063 bytes).
 PDF statistics:
- 373 PDF objects out of 1000 (max. 8388607)
+ 362 PDF objects out of 1000 (max. 8388607)
  66 named destinations out of 1000 (max. 500000)
  142 words of extra memory for PDF output out of 10000 (max. 10000000)
 

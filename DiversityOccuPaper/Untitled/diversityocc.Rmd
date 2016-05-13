@@ -10,12 +10,12 @@ author:
   - name: Elisabeth Webb
     affiliation: University of Missouri, USGS
   - name: Dylan Kesler
-    affiliation: Institute Of Bird Population
+    affiliation: Institute for Bird Populations
 title:
   formatted: "Selecting priority areas from diversity and individual species abundance \\pkg{DiversityOccupancy}"
   short:     "\\pkg{DiversityOccupancy}: Selecting Priority Areas"
 abstract: >
-  Lately occupancy modeling has been vastly used as a tool for ecological research and management planing. However mostly it is used by interpreting single species models. We present the \pkg{DiversityOccupancy} in the \proglang{R} environment. The objective of this package is to simultaneously model factors associated with occupancy and abundance of individual species using a detection history file, and to use predicted abundances to calculate species diversity for each sampling site. The package then models factor(s) associated with among-site species diversity, which can then be combined with spatial data to identify areas that contain both high abundance of species of conservation concern and high species diversity.
+  Lately occupancy modeling has been widely used as a tool for ecological research and management planning, most often in the context of single species models. We present the package \pkg{DiversityOccupancy} in the \proglang{R} environment. The objective of this package is to simultaneously model factors associated with occupancy and abundance of individual species using a detection history file, and to use predicted abundances to calculate species diversity for each sampling site. The package then models factor(s) associated with among-site species diversity, which can be combined with spatial data to identify areas that contain both high abundance of species of conservation concern and high species diversity.
 keywords:
   # at least one keyword must be supplied
   formatted: [ "\\pkg{DiversityOccupancy}", Occupancy Modeling, "\\proglang{R}"]
@@ -25,6 +25,7 @@ preamble: >
 biblio-style: jss
 output:
   rticles::jss_article:
+    fig_caption: true
     citation_package: natbib
 bibliography: Derek.bib
 ---
@@ -45,9 +46,9 @@ options(replace.assign=TRUE, width=90, prompt="R> ")
 
 ## Single-species or multiple-species management
 
-The ecological and management literature has usually valued the idea of managing for diversity. This, however clashes with the classic way in which conservation takes place. Conservation agencies, governments, scientists and international organizations such as International Union for Conservation of Nature (IUCN), classify species according to a conservation status, and policies are made to safe-ward the ones that are envisioned as species of conservation concern \citep{keller2004red, rodrigues2006value}. Single species are easier to manage for, and it is easier to keep track the status of a species than it is to define management for diversity \citep{simberloff1998flagships}, it is also more complicated to sample and keep track of changes in diversity.
+The ecological and management literature has historically valued the idea of managing for diversity. This, however, clashes with the classic way in which conservation takes place. Conservation agencies, governments, scientists and international organizations such as International Union for Conservation of Nature (IUCN), classify species according to a conservation status, and policies are enacted to safeguard the ones that species of conservation concern \citep{keller2004red, rodrigues2006value}. Managing for single species is often less complicated than simultaneously addressing suites of species, and it is may be simpler to track the status of a species than it is to define management for diversity \citep{simberloff1998flagships}. Further, tracking the conservation status of a single species is often more straightfroward than tracking multiple species or diversity.
 
-There are several approaches to design management measures based on single species, such as using umbrella species \citep{crosby2015looking, bichet2016maintaining}, Habitat Suitability Indices (HSI) \citep{reza2013integrating, soniat2013predicting, zohmann2013modelling} and Species distribution modeling (SDM) \citep{peterson2011ecological, guisan2013predicting} among others. Even when the literature mostly criticizes the use of such approaches due to the ineffectiveness in preventing loss of biodiversity \citep{roberge2004usefulness, branton2011assessing}
+There are several approaches to designing management measures based on single species, such as using umbrella species \citep{crosby2015looking, bichet2016maintaining}, Habitat Suitability Indices (HSI) \citep{reza2013integrating, soniat2013predicting, zohmann2013modelling} and Species distribution modeling (SDM) \citep{peterson2011ecological, guisan2013predicting} among others. Even when the literature mostly criticizes the use of such approaches due to the ineffectiveness in preventing loss of biodiversity \citep{roberge2004usefulness, branton2011assessing}.
 
 One of the problems of managing simple species, is that is usually very difficult to predict what will happen to other species and because of that it is hard to predict what will happen to diversity \citep{pulliam2000relationship}, with some examples showing that even management measurements that use some species as umbrella species for conservation of ecosystems leading to undesired community effects \citep{white2013conservation}.
 
@@ -84,164 +85,167 @@ install.packages("DiversityOccupancy")
 
 ## Objectives of the Package
 
-
 # Use of the package
 
 In order to calculate abundance and alpha diversity we need at least three files:
 
 #### Detection history of multiple species
 
-A data frame consisting on the detection history of at least two species.  As an example \pkg{DiversityOccupancy} has the data-set BatOccu which contains detection histories of 17 species of bats in the Plumas National Forest for 3 consecutive days (Columns) in 49 different sites (Rows). The data set includes a 1 for each time a species was detected, and a 0 for each time it was not detected.
+A data frame consisting on the detection history of at least two species.  As an example \pkg{DiversityOccupancy} has the data-set Islandbirds which contains detections history of 5 species in the Pohnpei Island for 4 consecutive days (Columns) in 120 different sites (Rows). The data set includes a 1 for each time a species was detected, and a 0 for each time it was not detected.
 
-A detection for the first three species is presented below:
+A detection for the first two species is presented below:
 
 ```{r, echo=TRUE, message=FALSE}
 library(DiversityOccupancy)
-data("BatOccu")
-head(BatOccu[1:9])
+data("IslandBirds")
+head(IslandBirds[1:8], 10)
 ```
 
 ####Site covariates
 
-Site covariates are presented in a data frame consisting of measurements taken at each site. The covariates are used singly and in combination to model occupancy or abundance, and they should be variables that are stable within the scope of the length of the study. In \pkg{DiversityOccupancy} there is an example concordant with the BatOccu data set called sampling.cov:
+Site covariates are presented in a data frame consisting of measurements taken at each site. The covariates are used singly and in combination to model occupancy or abundance, and they should be variables that are stable within the scope of the length of the study. In \pkg{DiversityOccupancy} there is an example concordant with the IslandBirds data set called siteCov:
 
 ```{r, echo=TRUE, eval=FALSE}
-data("sampling.cov")
-head(sampling.cov)
+data("siteCov")
+head(siteCov, 10)
 ```
 
+
 ```{r, echo=FALSE}
-data("sampling.cov")
-head(sampling.cov)
+data("siteCov")
+head(siteCov)
 ```
 
 ####Detection covariates
 
 A list of data frames, in which each data frame includes a daily measurement of variables with the potential to affect detection probabilities. It is important that each element (data frame) of the list has a name, so that it can be called to fit the occupancy model. These variables are used to model the probability of detection.
 
-\pkg{DiversityOccupancy} has a data set called *Dailycov* which illustrates how the Daily covariates have to be structured:
+\pkg{DiversityOccupancy} has a data set called *Daily_Cov* which illustrates how the Daily covariates have to be structured:
 
 ```{r, echo=TRUE}
 #All the items of the ist must have names
-names(Dailycov)
-#here we see the first dataframe of the Dailycov dataset
-head(Dailycov[[1]])
+names(Daily_Cov)
+#here we see the first dataframe of the Daily_Cov dataset
+head(Daily_Cov[[1]])
 ```
 
 ##Fiting models for abundance and predicting alpha diversity
 
-In this example we will fit and model the abundance for 17 bat species and calculate alpha diversity from those results.
+In this example we will fit and model the abundance for 5 bird species and calculate alpha diversity from those results.
 
 ```{r, echo=TRUE, cache=TRUE, message=FALSE, warning=FALSE}
-BatDiversity <-diversityoccu(pres = BatOccu, sitecov = sampling.cov, obscov =
-Dailycov,spp = 17, form = ~ Julian + Meanhum ~ Burn.intensity.soil +
-I(Burn.intensity.soil^2), dredge = FALSE)
+birdDiversity <-diversityoccu(pres = IslandBirds, sitecov = siteCov,
+obscov = Daily_Cov,spp =  5, form = ~ Day + Wind + Time ~ Elev + Wetland + Upland, dredge = FALSE)
 ```
 
 The resulting object of class diversityoccupancy has the following elements
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE}
-names(BatDiversity)
+names(birdDiversity)
 ```
 
 If you need to see the parameters of the model of one of the species, you call the species number with the element$models. For example extract the model for the second species:
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE}
-BatDiversity$models[[2]]
+birdDiversity$models[[2]]
 ```
 
 The species parameter for a diversityoccupancy object shows us a table with the abundance and alpha diversity calculated for each sampled point:
 
 ```{r, echo=TRUE, message=FALSE, warning=FALSE, eval=TRUE}
-summary(BatDiversity$species)
+summary(birdDiversity$species)
 ```
-
 
 ## Automatic model selection for abundance models
 
-If the option of dredge is set to “TRUE”, then diversityoccu attempts to fit all first order models, and it selects the one with the lowest AICc value, for each species.  Be aware that processing times rapidly increases with added numbers of parameters, and that processing can require many hours or days for complex data sets.  The following graph and table shows the processing time for the BatOccu data set.
+If the option of dredge is set to “TRUE”, then diversityoccu attempts to fit all first order models, and it selects the one with the lowest AICc value, for each species.  Be aware that processing times rapidly increases with added numbers of parameters, and that processing can require many hours or days for complex data sets.  The following graph and table shows the processing time for the IslandBirds data set.
 
 ```{r, echo=FALSE, cache=TRUE, warning=FALSE, message=FALSE}
-time.comp<- read.csv('~/DiversityOccupancyJSS/DiversityOccuPaper/Times.csv')
+time.comp<- read.csv("~/DiversityOccupancyJSS/DiversityOccuPaper/Times.csv")
 library(ggplot2)
 ggplot(time.comp, aes(x = K, y = Time)) + geom_smooth() + geom_point()+ggtitle("Time taken for model selection") + labs(x = "Number of Parameters [K]" , y = "Processing time [seconds]") + theme_bw()
 ```
 
-From now on we will work with automatically selected models for bat abundance and diversity using an information theoretic approach (AICc).
+From now on we will work with automatically selected models for bird abundance and diversity using an information theoretic approach (AICc).
 
 ```{r,echo=TRUE, cache=TRUE, warning=FALSE, message=FALSE, eval=TRUE}
-batmodel.selected <- diversityoccu(pres = BatOccu, sitecov = sampling.cov, obscov = Dailycov,spp = 17, form = ~ Julian + Meanhum ~ Burn.intensity.soil + I(Burn.intensity.soil^2), dredge = TRUE)
+birdmodel.selected <- diversityoccu(pres = IslandBirds, sitecov = siteCov,
+obscov = Daily_Cov,spp =  5, form = ~ Day + Wind + Time ~ Elev + Wetland + Upland, dredge = TRUE)
 ```
 
 Below we present an example of an analysis with the full model (includes all variables) and subsequently results from a model selection analysis, both of them only for the second species:
 
 ```{r, warning=FALSE, message=FALSE}
-BatDiversity$models[[2]]
-batmodel.selected$models[[2]]
+birdDiversity$models[[2]]
+birdmodel.selected$models[[2]]
 ```
 
-The responses of individual species to specific variables can be shown using the function responseplot.abund, bellow we show the response of abundance in species 2 to the Burn intensity soil. Note that this function automatically bounds the limits of the variable to the maximum and minimum observable values in the field.
+The responses of individual species to specific variables can be shown using the function respnseplot.abund, bellow we show the response of abundance in species 2 to the Burn intensity soil. Note that this function automatically bounds the limits of the variable to the maximum and minimum observable values in the field.
 
 ```{r, warning=FALSE, message=FALSE}
-responseplot.abund(batmodel.selected, spp = 2, variable = Burn.intensity.soil)
+responseplot.abund(birdmodel.selected, spp = 2, variable = Elev)
 ```
-
 
 ##Model selection for alpha diversity modeling
 
 The next step is to select the best model for predicting alpha diversity using the model.diversity function.  The function takes a diversityoccupancy object, and fits all possible glm models and ranks them by AICc. Other than the diversityoccupancy object, there are three other parameters to select: 1) Method, which can be either “h” which fits every possible model, or “g”, which uses genetic algorithms to select models (recommended for large candidate sets); 2) Delta, which allows the user to identify an AICc delta threshold, which returns all models with AICc values below the threshold; 3) Squared, which includes only linear combinations when set to FALSE (Default), and both linear and quadratic (second order) if set to TRUE.
 
 ```{r, warning=FALSE, message=FALSE, results='hide', cache=TRUE}
-glm.Batdiverse <- model.diversity(batmodel.selected, method = "g", delta = 2,
+glm.BirdDiverse <- model.diversity(birdmodel.selected, method = "g", delta = 2, 
 squared = TRUE)
 ```
 
 To see the top models extract the Table element of the modelselection object
 
-```{r}
-class(glm.Batdiverse$Table)
+```{r, echo=FALSE}
+glm.BirdDiverse$Table
 ```
 
 The responseplot.diver function takes a modeldiversity object and one of the variables used to predict the alpha diversity index, and makes a plot showing the response of the diversity index against the selected variable. This function automatically limits the values of that variable to the maximum and minimum values of the dataset. It also shows the standard deviation of the estimation.
 
 ```{r, echo=TRUE}
-responseplot.diver(glm.Batdiverse, Burn.intensity.soil)
+responseplot.diver(glm.BirdDiverse, Elev)
 ```
 
 Also since the returned plot is a ggplot type object, it can be easily modified following ggplot2 grammar of graphics.
 
 ```{r, echo=TRUE}
 library(ggplot2)
-k <- responseplot.diver(glm.Batdiverse, Burn.intensity.soil)
+k <- responseplot.diver(glm.BirdDiverse, Elev)
 k
-k + geom_line(color = "red")
-k + ylim(c(0,3))
+k + theme_gray()
+k + ylim(c(0,1))
 ```
 
 ##Selecting conservation areas based on alpha diversity and abundance of species of conservation concern
 
-Of the 17 species modeled, there are at least three of conservation concern, pallid bat (*Antrozous pallidus*), corresponding to species 9th of our list.
-Since we already have models relating site characteristics to species abundance and a model relating site characteristics to alpha diversity, with the use of a spatial raster layers (rasterstack) with the modeled variables we can choose an area with high species diversity and/or abundance.
+Of the 5 species modeled, lets say that there are at least two of conservation concern, the second and thirds of our list.
+Since we already have models relating site characteristics to species abundance and a model relating site characteristics to alpha diversity, with the use of a spatial raster layers (rasterstack) with the modeled variables we can choose an area with high species diversity and/or abundance. In order for this function to work properly the stack has to be in lon lat projection, and Birdstack is in UTM, so we reproject the data.
 
-```{r}
+```{r, warning=FALSE}
 library(raster)
-data(plumas.stack)
-plot(plumas.stack)
+data(Birdstack)
+plot(Birdstack)
+newproj <- '+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0'
+library(rgdal)
+Birdstack <- stack(projectRaster(Birdstack, crs=newproj))
 ```
 
 In order to find areas of high conservation value, we use the predict.diversity function. We need both a diversityoccupancy and a modeldiversity class object, used in the model, and diverse parameters respectfully, a spatial representation of site covariates as raster files (rasterstack), with the variables in the new.data parameter, a boolean vector in the species parameter indicating which species shall be considered (T or F), and the quantile.nth parameter, which indicates a quantile threshold that is used for abundance and/or richness to indicate conservation value (areas above the threshold will be returned).
 
+
+
 ```{r, cache=TRUE, warning=FALSE, message=FALSE, results='hide', echo=TRUE}
-Selected.area <- diversity.predict(model = batmodel.selected, diverse = glm.Batdiverse, new.data = plumas.stack, quantile.nth = 0.65, species =
-c(F,F,F,F,F,F,F,F,T,F,F,F,F,F,F,F,F))
+Selected.area <- diversity.predict(model = birdmodel.selected, diverse = glm.BirdDiverse, new.data = Birdstack, quantile.nth = 0.65, species =
+c(F,T,T,F,F))
 ```
 
-This function automatically creates a KMZ file that will be stored in the home directory of your session
+
+From the object Selected.area we can extract and plot not only the area that was selected with the atributes, but also the layers that shoe the predicted diversity for the island and also the predicted abundance for each of the species that were used for the analysis.
+
+
 
 
 #Discussion
-
-The \pkg{DiversityOccupancy} package lets scientists and managers take decisions based on species information, diversity information or both. In some countries, laws require that the decision is taken based on endangered species information, the possibility on selecting an area, or manage environments based on both diversity and species specific information, gives a possibility to managers or decision makers wanting to use diversity with laws requiring them to take species into account.
-
 
 # References

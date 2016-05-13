@@ -5,24 +5,24 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \author{
-Derek Corcoran\\University of Missouri \And Elisabeth Webb\\University of Missouri, USGS \And Dylan Kesler\\Institute Of Bird Population
+Derek Corcoran\\University of Missouri \And Elisabeth Webb\\University of Missouri, USGS \And Dylan Kesler\\Institute for Bird Populations
 }
 \title{Selecting priority areas from diversity and individual species abundance
 \pkg{DiversityOccupancy}}
 \Keywords{\pkg{DiversityOccupancy}, Occupancy Modeling, \proglang{R}}
 
 \Abstract{
-Lately occupancy modeling has been vastly used as a tool for ecological
-research and management planing. However mostly it is used by
-interpreting single species models. We present the
-\pkg{DiversityOccupancy} in the \proglang{R} environment. The objective
-of this package is to simultaneously model factors associated with
-occupancy and abundance of individual species using a detection history
-file, and to use predicted abundances to calculate species diversity for
-each sampling site. The package then models factor(s) associated with
-among-site species diversity, which can then be combined with spatial
-data to identify areas that contain both high abundance of species of
-conservation concern and high species diversity.
+Lately occupancy modeling has been widely used as a tool for ecological
+research and management planning, most often in the context of single
+species models. We present the package \pkg{DiversityOccupancy} in the
+\proglang{R} environment. The objective of this package is to
+simultaneously model factors associated with occupancy and abundance of
+individual species using a detection history file, and to use predicted
+abundances to calculate species diversity for each sampling site. The
+package then models factor(s) associated with among-site species
+diversity, which can be combined with spatial data to identify areas
+that contain both high abundance of species of conservation concern and
+high species diversity.
 }
 
 \Plainauthor{Derek Corcoran, Elisabeth Webb, Dylan Kesler}
@@ -54,20 +54,22 @@ conservation concern and high species diversity.
 \subsection{Single-species or multiple-species
 management}\label{single-species-or-multiple-species-management}
 
-The ecological and management literature has usually valued the idea of
-managing for diversity. This, however clashes with the classic way in
-which conservation takes place. Conservation agencies, governments,
-scientists and international organizations such as International Union
-for Conservation of Nature (IUCN), classify species according to a
-conservation status, and policies are made to safe-ward the ones that
-are envisioned as species of conservation concern
-\citep{keller2004red, rodrigues2006value}. Single species are easier to
-manage for, and it is easier to keep track the status of a species than
+The ecological and management literature has historically valued the
+idea of managing for diversity. This, however, clashes with the classic
+way in which conservation takes place. Conservation agencies,
+governments, scientists and international organizations such as
+International Union for Conservation of Nature (IUCN), classify species
+according to a conservation status, and policies are enacted to
+safeguard the ones that species of conservation concern
+\citep{keller2004red, rodrigues2006value}. Managing for single species
+is often less complicated than simultaneously addressing suites of
+species, and it is may be simpler to track the status of a species than
 it is to define management for diversity
-\citep{simberloff1998flagships}, it is also more complicated to sample
-and keep track of changes in diversity.
+\citep{simberloff1998flagships}. Further, tracking the conservation
+status of a single species is often more straightfroward than tracking
+multiple species or diversity.
 
-There are several approaches to design management measures based on
+There are several approaches to designing management measures based on
 single species, such as using umbrella species
 \citep{crosby2015looking, bichet2016maintaining}, Habitat Suitability
 Indices (HSI)
@@ -76,7 +78,7 @@ and Species distribution modeling (SDM)
 \citep{peterson2011ecological, guisan2013predicting} among others. Even
 when the literature mostly criticizes the use of such approaches due to
 the ineffectiveness in preventing loss of biodiversity
-\citep{roberge2004usefulness, branton2011assessing}
+\citep{roberge2004usefulness, branton2011assessing}.
 
 One of the problems of managing simple species, is that is usually very
 difficult to predict what will happen to other species and because of
@@ -161,28 +163,32 @@ three files:
 species}\label{detection-history-of-multiple-species}
 
 A data frame consisting on the detection history of at least two
-species. As an example \pkg{DiversityOccupancy} has the data-set BatOccu
-which contains detection histories of 17 species of bats in the Plumas
-National Forest for 3 consecutive days (Columns) in 49 different sites
+species. As an example \pkg{DiversityOccupancy} has the data-set
+Islandbirds which contains detections history of 5 species in the
+Pohnpei Island for 4 consecutive days (Columns) in 120 different sites
 (Rows). The data set includes a 1 for each time a species was detected,
 and a 0 for each time it was not detected.
 
-A detection for the first three species is presented below:
+A detection for the first two species is presented below:
 
 \begin{CodeChunk}
 \begin{CodeInput}
 library(DiversityOccupancy)
-data("BatOccu")
-head(BatOccu[1:9])
+data("IslandBirds")
+head(IslandBirds[1:8], 10)
 \end{CodeInput}
 \begin{CodeOutput}
-  Myyu1 Myyu2 Myyu3 Myca1 Myca2 Myca3 Myci1 Myci2 Myci3
-1     0     0     0     0     0     0     0     0     0
-2     1     0     0     1     0     0     0     0     0
-3     0     0     0     0     1     0     0     0     0
-4     0     0     0     0     0     0     0     0     0
-5     0     0     0     1     1     1     0     0     0
-6     1     0     0     1     1     1     0     0     0
+   CICA.1 CICA.2 CICA.3 CICA.4 CIRW.1 CIRW.2 CIRW.3 CIRW.4
+1       0      0      0      0      0      0      0      0
+2       0      0      0      0      0      0      0      0
+3       0      0      0      0      0      0      0      0
+4       0      0      0      0      0      0      0      0
+5       0      0      0      0      0      0      0      0
+6       0      0      0      0      0      0      1      0
+7       0      0      0      0      0      0      0      0
+8       0      0      0      1      0      0      0      0
+9       0      0      0      0      0      0      0      0
+10      0      0      0      0      0      0      0      0
 \end{CodeOutput}
 \end{CodeChunk}
 
@@ -192,32 +198,25 @@ Site covariates are presented in a data frame consisting of measurements
 taken at each site. The covariates are used singly and in combination to
 model occupancy or abundance, and they should be variables that are
 stable within the scope of the length of the study. In
-\pkg{DiversityOccupancy} there is an example concordant with the BatOccu
-data set called sampling.cov:
+\pkg{DiversityOccupancy} there is an example concordant with the
+IslandBirds data set called siteCov:
 
 \begin{CodeChunk}
 \begin{CodeInput}
-data("sampling.cov")
-head(sampling.cov)
+data("siteCov")
+head(siteCov, 10)
 \end{CodeInput}
 \end{CodeChunk}
 
 \begin{CodeChunk}
 \begin{CodeOutput}
-  Distance.to.water Distance.to.road Existing.vegetation Fire.Interval Altitude
-1                 0         325.2647            3.000000      14.79164 1859.337
-2                 0           0.0000           15.294588      11.00000 1839.813
-3                 0           0.0000            4.769200      16.00000 1890.586
-4                 0           0.0000            4.705464      18.27010 1927.237
-5                 0           0.0000           14.224747      14.97247 1682.559
-6                 0        2308.6010           15.727460      15.81841 1515.009
-  Burn.intensity.soil Burn.intensity.Canopy Burn.intensity.basal
-1          0.00000000            0.00000000           0.00000000
-2          0.24802029            0.12812701           0.12812701
-3          0.00000000            0.00000000           0.00000000
-4          0.00000000            0.00000000           0.00000000
-5          3.42075635            3.84151252           5.30799686
-6          0.01135227            0.01135223           0.01135223
+   Elev     AgroFo      SecVec Wetland    Upland
+1 214.6 0.04536772 0.309614772       0 0.6450175
+2 254.7 0.00000000 0.013053168       0 0.9869468
+3 321.5 0.00000000 0.009073543       0 0.9909265
+4  68.2 0.00000000 0.000000000       0 1.0000000
+5 346.5 0.00000000 0.106972302       0 0.8930277
+6  74.5 0.00000000 0.000000000       0 1.0000000
 \end{CodeOutput}
 \end{CodeChunk}
 
@@ -229,52 +228,51 @@ probabilities. It is important that each element (data frame) of the
 list has a name, so that it can be called to fit the occupancy model.
 These variables are used to model the probability of detection.
 
-\pkg{DiversityOccupancy} has a data set called \emph{Dailycov} which
+\pkg{DiversityOccupancy} has a data set called \emph{Daily\_Cov} which
 illustrates how the Daily covariates have to be structured:
 
 \begin{CodeChunk}
 \begin{CodeInput}
 #All the items of the ist must have names
-names(Dailycov)
+names(Daily_Cov)
 \end{CodeInput}
 \begin{CodeOutput}
-[1] "Julian"   "Maxhum"   "Maxtemp"  "Meanhum"  "Meantemp" "Minhum"   "Mintemp" 
-[8] "sdhum"    "sdtemp"  
+[1] "Day"    "Wind"   "Obs"    "Time"   "Rain"   "Noise"  "Clouds"
 \end{CodeOutput}
 \begin{CodeInput}
-#here we see the first dataframe of the Dailycov dataset
-head(Dailycov[[1]])
+#here we see the first dataframe of the Daily_Cov dataset
+head(Daily_Cov[[1]])
 \end{CodeInput}
 \begin{CodeOutput}
-  Julian.Julian1 Julian.Julian2 Julian.Julian3
-1      -1.683391      -1.683391      -1.683019
-2      -1.620723      -1.620723      -1.620362
-3      -1.684443      -1.684443      -1.684071
-4      -1.557310      -1.557310      -1.556958
-5      -1.429475      -1.429475      -1.434405
-6      -1.241253      -1.241253      -1.240951
+   Day1 Day2 Day3 Day4
+3    25   27   33   42
+5    25   27   33   42
+7    25   27   33   41
+11   19   22   25   51
+13   19   22   25   51
+16   19   22   25   51
 \end{CodeOutput}
 \end{CodeChunk}
 
 \subsection{Fiting models for abundance and predicting alpha
 diversity}\label{fiting-models-for-abundance-and-predicting-alpha-diversity}
 
-In this example we will fit and model the abundance for 17 bat species
+In this example we will fit and model the abundance for 5 bird species
 and calculate alpha diversity from those results.
 
-\textbackslash{}begin\{CodeChunk\} \textbackslash{}begin\{CodeInput\}
-BatDiversity \textless{}-diversityoccu(pres = BatOccu, sitecov =
-sampling.cov, obscov = Dailycov,spp = 17, form = \textasciitilde{}
-Julian + Meanhum \textasciitilde{} Burn.intensity.soil +
-I(Burn.intensity.soil\^{}2), dredge = FALSE)
-\textbackslash{}end\{CodeInput\} \textbackslash{}end\{CodeChunk\}
+\begin{CodeChunk}
+\begin{CodeInput}
+birdDiversity <-diversityoccu(pres = IslandBirds, sitecov = siteCov,
+obscov = Daily_Cov,spp =  5, form = ~ Day + Wind + Time ~ Elev + Wetland + Upland, dredge = FALSE)
+\end{CodeInput}
+\end{CodeChunk}
 
 The resulting object of class diversityoccupancy has the following
 elements
 
 \begin{CodeChunk}
 \begin{CodeInput}
-names(BatDiversity)
+names(birdDiversity)
 \end{CodeInput}
 \begin{CodeOutput}
 [1] "Covs"      "models"    "Diversity" "species"  
@@ -287,7 +285,7 @@ extract the model for the second species:
 
 \begin{CodeChunk}
 \begin{CodeInput}
-BatDiversity$models[[2]]
+birdDiversity$models[[2]]
 \end{CodeInput}
 \begin{CodeOutput}
 
@@ -295,18 +293,20 @@ Call:
 occuRN(formula = form, data = models[[i]])
 
 Abundance:
-                          Estimate     SE      z P(>|z|)
-(Intercept)               0.000567 0.2829  0.002   0.998
-Burn.intensity.soil       0.543374 0.3826  1.420   0.156
-I(Burn.intensity.soil^2) -0.092936 0.0996 -0.933   0.351
+             Estimate       SE      z P(>|z|)
+(Intercept)   0.66046 7.41e-01  0.891  0.3731
+Elev         -0.00398 1.73e-03 -2.305  0.0212
+Wetland     -47.31278 1.72e+02 -0.276  0.7828
+Upland       -0.42087 5.56e-01 -0.756  0.4494
 
 Detection:
-            Estimate    SE      z P(>|z|)
-(Intercept)    0.113 0.357  0.317  0.7512
-Julian        -0.097 0.267 -0.364  0.7159
-Meanhum       -0.548 0.246 -2.228  0.0259
+            Estimate      SE      z P(>|z|)
+(Intercept) -2.36626 1.80923 -1.308  0.1909
+Day          0.03480 0.01801  1.932  0.0534
+Wind        -0.10959 0.19166 -0.572  0.5675
+Time        -0.00114 0.00375 -0.305  0.7605
 
-AIC: 180.113 
+AIC: 208.1134 
 \end{CodeOutput}
 \end{CodeChunk}
 
@@ -314,37 +314,23 @@ The species parameter for a diversityoccupancy object shows us a table with the 
 
 \begin{CodeChunk}
 \begin{CodeInput}
-summary(BatDiversity$species)
+summary(birdDiversity$species)
 \end{CodeInput}
 \begin{CodeOutput}
-       h           species.1        species.2       species.3        species.4     
- Min.   :2.115   Min.   :0.3528   Min.   :1.001   Min.   :0.1156   Min.   :0.4802  
- 1st Qu.:2.115   1st Qu.:0.3528   1st Qu.:1.001   1st Qu.:0.1156   1st Qu.:0.5504  
- Median :2.277   Median :0.5153   Median :1.300   Median :0.1883   Median :0.5863  
- Mean   :2.291   Mean   :0.7520   Mean   :1.523   Mean   :0.3401   Mean   :0.6125  
- 3rd Qu.:2.488   3rd Qu.:1.2428   3rd Qu.:2.045   3rd Qu.:0.6356   3rd Qu.:0.5870  
- Max.   :2.553   Max.   :1.3027   Max.   :2.214   Max.   :0.6695   Max.   :0.8884  
-   species.5        species.6           species.7        species.8       species.9     
- Min.   :0.3020   Min.   :0.0000223   Min.   : 2.776   Min.   :1.716   Min.   :0.1006  
- 1st Qu.:0.3020   1st Qu.:0.0000223   1st Qu.: 4.261   1st Qu.:1.716   1st Qu.:0.2089  
- Median :0.5035   Median :0.0004349   Median : 6.424   Median :2.035   Median :0.3037  
- Mean   :0.6907   Mean   :0.0983938   Mean   : 6.267   Mean   :2.603   Mean   :0.4328  
- 3rd Qu.:1.1210   3rd Qu.:0.1874298   3rd Qu.: 6.424   3rd Qu.:3.584   3rd Qu.:0.3037  
- Max.   :1.2776   Max.   :0.3654810   Max.   :12.836   Max.   :4.150   Max.   :1.6148  
-   species.10       species.11       species.12       species.13      species.14   
- Min.   :0.3994   Min.   :0.5758   Min.   :0.3391   Min.   :1.638   Min.   :1.016  
- 1st Qu.:0.5334   1st Qu.:0.5770   1st Qu.:0.3391   1st Qu.:1.638   1st Qu.:1.239  
- Median :0.5334   Median :0.5816   Median :0.5080   Median :1.750   Median :1.360  
- Mean   :1.5900   Mean   :0.8988   Mean   :0.5584   Mean   :2.746   Mean   :1.472  
- 3rd Qu.:1.3059   3rd Qu.:1.0866   3rd Qu.:0.7826   3rd Qu.:3.533   3rd Qu.:1.369  
- Max.   :7.1212   Max.   :1.9802   Max.   :0.9358   Max.   :6.038   Max.   :2.525  
-   species.15       species.16        species.17     
- Min.   :0.1267   Min.   : 0.7016   Min.   :0.06252  
- 1st Qu.:0.1267   1st Qu.: 0.7016   1st Qu.:0.06252  
- Median :0.2016   Median : 0.7636   Median :0.12145  
- Mean   :0.2653   Mean   : 2.9118   Mean   :0.36548  
- 3rd Qu.:0.4187   3rd Qu.: 3.3637   3rd Qu.:0.74717  
- Max.   :0.4708   Max.   :11.9074   Max.   :0.90081  
+       h            species.1        species.2        species.3       species.4     
+ Min.   :0.9332   Min.   :0.1863   Min.   :0.0000   Min.   :1.636   Min.   :0.1107  
+ 1st Qu.:1.2299   1st Qu.:0.4451   1st Qu.:0.1188   1st Qu.:2.128   1st Qu.:0.7577  
+ Median :1.2952   Median :0.6292   Median :0.5799   Median :3.051   Median :2.4028  
+ Mean   :1.2679   Mean   :0.6486   Mean   :0.5679   Mean   :2.740   Mean   :1.9794  
+ 3rd Qu.:1.3262   3rd Qu.:0.7794   3rd Qu.:0.8910   3rd Qu.:3.275   3rd Qu.:3.0071  
+ Max.   :1.3616   Max.   :1.2106   Max.   :1.8616   Max.   :3.553   Max.   :3.7061  
+   species.5      
+ Min.   :0.04913  
+ 1st Qu.:0.29879  
+ Median :0.56381  
+ Mean   :0.60893  
+ 3rd Qu.:0.74995  
+ Max.   :2.01430  
 \end{CodeOutput}
 \end{CodeChunk}
 
@@ -356,7 +342,7 @@ to fit all first order models, and it selects the one with the lowest
 AICc value, for each species. Be aware that processing times rapidly
 increases with added numbers of parameters, and that processing can
 require many hours or days for complex data sets. The following graph
-and table shows the processing time for the BatOccu data set.
+and table shows the processing time for the IslandBirds data set.
 
 \begin{CodeChunk}
 
@@ -365,15 +351,15 @@ and table shows the processing time for the BatOccu data set.
 
 \end{CodeChunk}
 
-From now on we will work with automatically selected models for bat
+From now on we will work with automatically selected models for bird
 abundance and diversity using an information theoretic approach (AICc).
 
-\textbackslash{}begin\{CodeChunk\} \textbackslash{}begin\{CodeInput\}
-batmodel.selected \textless{}- diversityoccu(pres = BatOccu, sitecov =
-sampling.cov, obscov = Dailycov,spp = 17, form = \textasciitilde{}
-Julian + Meanhum \textasciitilde{} Burn.intensity.soil +
-I(Burn.intensity.soil\^{}2), dredge = TRUE)
-\textbackslash{}end\{CodeInput\} \textbackslash{}end\{CodeChunk\}
+\begin{CodeChunk}
+\begin{CodeInput}
+birdmodel.selected <- diversityoccu(pres = IslandBirds, sitecov = siteCov,
+obscov = Daily_Cov,spp =  5, form = ~ Day + Wind + Time ~ Elev + Wetland + Upland, dredge = TRUE)
+\end{CodeInput}
+\end{CodeChunk}
 
 Below we present an example of an analysis with the full model (includes
 all variables) and subsequently results from a model selection analysis,
@@ -381,7 +367,7 @@ both of them only for the second species:
 
 \begin{CodeChunk}
 \begin{CodeInput}
-BatDiversity$models[[2]]
+birdDiversity$models[[2]]
 \end{CodeInput}
 \begin{CodeOutput}
 
@@ -389,50 +375,53 @@ Call:
 occuRN(formula = form, data = models[[i]])
 
 Abundance:
-                          Estimate     SE      z P(>|z|)
-(Intercept)               0.000567 0.2829  0.002   0.998
-Burn.intensity.soil       0.543374 0.3826  1.420   0.156
-I(Burn.intensity.soil^2) -0.092936 0.0996 -0.933   0.351
+             Estimate       SE      z P(>|z|)
+(Intercept)   0.66046 7.41e-01  0.891  0.3731
+Elev         -0.00398 1.73e-03 -2.305  0.0212
+Wetland     -47.31278 1.72e+02 -0.276  0.7828
+Upland       -0.42087 5.56e-01 -0.756  0.4494
 
 Detection:
-            Estimate    SE      z P(>|z|)
-(Intercept)    0.113 0.357  0.317  0.7512
-Julian        -0.097 0.267 -0.364  0.7159
-Meanhum       -0.548 0.246 -2.228  0.0259
+            Estimate      SE      z P(>|z|)
+(Intercept) -2.36626 1.80923 -1.308  0.1909
+Day          0.03480 0.01801  1.932  0.0534
+Wind        -0.10959 0.19166 -0.572  0.5675
+Time        -0.00114 0.00375 -0.305  0.7605
 
-AIC: 180.113 
+AIC: 208.1134 
 \end{CodeOutput}
 \begin{CodeInput}
-batmodel.selected$models[[2]]
+birdmodel.selected$models[[2]]
 \end{CodeInput}
 \begin{CodeOutput}
 
 Call:
-occuRN(formula = ~Meanhum + 1 ~ Burn.intensity.soil + 1, data = data2)
+occuRN(formula = ~Day + 1 ~ Elev + Wetland + 1, data = data2)
 
 Abundance:
-                    Estimate     SE     z P(>|z|)
-(Intercept)           0.0767 0.2637 0.291  0.7712
-Burn.intensity.soil   0.1901 0.0973 1.953  0.0508
+            Estimate      SE      z P(>|z|)
+(Intercept)  0.50953 0.66082  0.771 0.44067
+Elev        -0.00446 0.00164 -2.725 0.00643
+Wetland     -5.05318 2.71875 -1.859 0.06308
 
 Detection:
-            Estimate    SE      z P(>|z|)
-(Intercept)    0.143 0.351  0.407  0.6840
-Meanhum       -0.530 0.242 -2.190  0.0285
+            Estimate     SE     z  P(>|z|)
+(Intercept)  -3.1681 0.8008 -3.96 7.62e-05
+Day           0.0324 0.0174  1.86 6.29e-02
 
-AIC: 177.0765 
+AIC: 204.0382 
 \end{CodeOutput}
 \end{CodeChunk}
 
 The responses of individual species to specific variables can be shown
-using the function responseplot.abund, bellow we show the response of
+using the function respnseplot.abund, bellow we show the response of
 abundance in species 2 to the Burn intensity soil. Note that this
 function automatically bounds the limits of the variable to the maximum
 and minimum observable values in the field.
 
 \begin{CodeChunk}
 \begin{CodeInput}
-responseplot.abund(batmodel.selected, spp = 2, variable = Burn.intensity.soil)
+responseplot.abund(birdmodel.selected, spp = 2, variable = Elev)
 \end{CodeInput}
 
 
@@ -457,7 +446,7 @@ and quadratic (second order) if set to TRUE.
 
 \begin{CodeChunk}
 \begin{CodeInput}
-glm.Batdiverse <- model.diversity(batmodel.selected, method = "g", delta = 2,
+glm.BirdDiverse <- model.diversity(birdmodel.selected, method = "g", delta = 2, 
 squared = TRUE)
 \end{CodeInput}
 \end{CodeChunk}
@@ -465,14 +454,21 @@ squared = TRUE)
 To see the top models extract the Table element of the modelselection
 object
 
-\textbackslash{}begin\{CodeChunk\} \textbackslash{}begin\{CodeInput\}
-class(glm.Batdiverse\$Table) \textbackslash{}end\{CodeInput\}
-
-\begin{CodeOutput}
-[1] "data.frame"
-\end{CodeOutput}
-
-\textbackslash{}end\{CodeChunk\}
+\textbackslash{}begin\{CodeChunk\} \textbackslash{}begin\{CodeOutput\}
+model 1 Diversity \textasciitilde{} 1 + Elev + AgroFo + Wetland +
+I(Elev\^{}2) + I(AgroFo\^{}2) + I(SecVec\^{}2) + I(Wetland\^{}2) +
+I(Upland\^{}2) 2 Diversity \textasciitilde{} 1 + Elev + AgroFo + Wetland
++ I(Elev\^{}2) + I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) 3
+Diversity \textasciitilde{} 1 + Elev + AgroFo + Wetland + Upland +
+I(Elev\^{}2) + I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) 4
+Diversity \textasciitilde{} 1 + Elev + SecVec + Wetland + Upland +
+I(Elev\^{}2) + I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) 5
+Diversity \textasciitilde{} 1 + Elev + AgroFo + SecVec + Wetland +
+I(Elev\^{}2) + I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) aicc
+weights Delta.AICc 1 -681.3992 0.2610582 0.0000000 2 -681.1351 0.2287691
+0.2640605 3 -680.7723 0.1908161 0.6268668 4 -680.4609 0.1632999
+0.9383094 5 -680.3701 0.1560568 1.0290469
+\textbackslash{}end\{CodeOutput\} \textbackslash{}end\{CodeChunk\}
 
 The responseplot.diver function takes a modeldiversity object and one of
 the variables used to predict the alpha diversity index, and makes a
@@ -483,7 +479,7 @@ standard deviation of the estimation.
 
 \begin{CodeChunk}
 \begin{CodeInput}
-responseplot.diver(glm.Batdiverse, Burn.intensity.soil)
+responseplot.diver(glm.BirdDiverse, Elev)
 \end{CodeInput}
 
 
@@ -497,7 +493,7 @@ modified following ggplot2 grammar of graphics.
 \begin{CodeChunk}
 \begin{CodeInput}
 library(ggplot2)
-k <- responseplot.diver(glm.Batdiverse, Burn.intensity.soil)
+k <- responseplot.diver(glm.BirdDiverse, Elev)
 k
 \end{CodeInput}
 
@@ -505,14 +501,14 @@ k
 \begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-20-1} \end{center}
 
 \begin{CodeInput}
-k + geom_line(color = "red")
+k + theme_gray()
 \end{CodeInput}
 
 
 \begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-20-2} \end{center}
 
 \begin{CodeInput}
-k + ylim(c(0,3))
+k + ylim(c(0,1))
 \end{CodeInput}
 
 
@@ -524,13 +520,14 @@ k + ylim(c(0,3))
 abundance of species of conservation
 concern}\label{selecting-conservation-areas-based-on-alpha-diversity-and-abundance-of-species-of-conservation-concern}
 
-Of the 17 species modeled, there are at least three of conservation
-concern, pallid bat (\emph{Antrozous pallidus}), corresponding to
-species 9th of our list. Since we already have models relating site
-characteristics to species abundance and a model relating site
-characteristics to alpha diversity, with the use of a spatial raster
-layers (rasterstack) with the modeled variables we can choose an area
-with high species diversity and/or abundance.
+Of the 5 species modeled, lets say that there are at least two of
+conservation concern, the second and thirds of our list. Since we
+already have models relating site characteristics to species abundance
+and a model relating site characteristics to alpha diversity, with the
+use of a spatial raster layers (rasterstack) with the modeled variables
+we can choose an area with high species diversity and/or abundance. In
+order for this function to work properly the stack has to be in lon lat
+projection, and Birdstack is in UTM, so we reproject the data.
 
 \begin{CodeChunk}
 \begin{CodeInput}
@@ -558,13 +555,30 @@ The following objects are masked from 'package:unmarked':
     getData, projection
 \end{CodeOutput}
 \begin{CodeInput}
-data(plumas.stack)
-plot(plumas.stack)
+data(Birdstack)
+plot(Birdstack)
 \end{CodeInput}
 
 
 \begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-21-1} \end{center}
 
+\begin{CodeInput}
+newproj <- '+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0'
+library(rgdal)
+\end{CodeInput}
+\begin{CodeOutput}
+rgdal: version: 1.1-9, (SVN revision 617M)
+ Geospatial Data Abstraction Library extensions to R successfully loaded
+ Loaded GDAL runtime: GDAL 2.0.1, released 2015/09/15
+ Path to GDAL shared files: C:/Users/corcoranbarriosd/Documents/R/win-library/3.2/rgdal/gdal
+ GDAL does not use iconv for recoding strings.
+ Loaded PROJ.4 runtime: Rel. 4.9.1, 04 March 2015, [PJ_VERSION: 491]
+ Path to PROJ.4 shared files: C:/Users/corcoranbarriosd/Documents/R/win-library/3.2/rgdal/proj
+ Linking to sp version: 1.2-3 
+\end{CodeOutput}
+\begin{CodeInput}
+Birdstack <- stack(projectRaster(Birdstack, crs=newproj))
+\end{CodeInput}
 \end{CodeChunk}
 
 In order to find areas of high conservation value, we use the
@@ -580,8 +594,8 @@ returned).
 
 \begin{CodeChunk}
 \begin{CodeInput}
-Selected.area <- diversity.predict(model = batmodel.selected, diverse = glm.Batdiverse, new.data = plumas.stack, quantile.nth = 0.65, species =
-c(F,F,F,F,F,F,F,F,T,F,F,F,F,F,F,F,F))
+Selected.area <- diversity.predict(model = birdmodel.selected, diverse = glm.BirdDiverse, new.data = Birdstack, quantile.nth = 0.65, species =
+c(F,T,T,F,F))
 \end{CodeInput}
 
 
@@ -589,18 +603,12 @@ c(F,F,F,F,F,F,F,F,T,F,F,F,F,F,F,F,F))
 
 \end{CodeChunk}
 
-This function automatically creates a KMZ file that will be stored in
-the home directory of your session
+From the object Selected.area we can extract and plot not only the area
+that was selected with the atributes, but also the layers that shoe the
+predicted diversity for the island and also the predicted abundance for
+each of the species that were used for the analysis.
 
 \section{Discussion}\label{discussion}
-
-The \pkg{DiversityOccupancy} package lets scientists and managers take
-decisions based on species information, diversity information or both.
-In some countries, laws require that the decision is taken based on
-endangered species information, the possibility on selecting an area, or
-manage environments based on both diversity and species specific
-information, gives a possibility to managers or decision makers wanting
-to use diversity with laws requiring them to take species into account.
 
 \renewcommand\refname{References}
 \bibliography{Derek}
