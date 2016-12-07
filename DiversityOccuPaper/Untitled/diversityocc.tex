@@ -150,6 +150,30 @@ modeling}\label{history-of-occupancy-modeling}
 \subsubsection{Math of Occupancy
 modeling}\label{math-of-occupancy-modeling}
 
+\[
+\begin{aligned}
+  \ p* = 1 -  \left( 1 - p \right)^t \
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+  \psi & = \frac{Sd}{S \times\ p*} \
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+  \psi & = \frac{Sd}{S \times\ p*} \
+\end{aligned}
+\]
+
+\[
+\begin{aligned}
+  \psi = \frac{exp(Cov \times\ \beta)}{1 + exp(Cov \times\ \beta)} \
+\end{aligned}
+\]
+
 \subsubsection{History of occupancy modeling software's and it's
 limitation (the need for
 DiversityOccupancy)}\label{history-of-occupancy-modeling-softwares-and-its-limitation-the-need-for-diversityoccupancy}
@@ -228,9 +252,17 @@ The Island of Pohnpei is a 334 squared kilometer island, in Oceania. it
 is the largest and most populated Island in the Federal States of
 Micronesia. Like every oceanic Island it has high endemism. It has a
 rich mosaic of ecosystems composed by manglars, palm forest, dwarf
-forests among others \citep{raynor1994resource}.
+forests among others
+\citep{raynor1994resource, buden2000comparison, merlin2005kava}.
 
 \subsection{Bird Species}\label{bird-species}
+
+\[
+\begin{aligned}
+  \dot{x} & = \sigma(y-x) \\
+  \dot{y} & = \rho x- y - xz 
+\end{aligned}
+\]
 
 \section{Use of the package}\label{use-of-the-package}
 

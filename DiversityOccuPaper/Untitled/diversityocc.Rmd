@@ -77,6 +77,31 @@ library(knitr)
 
 ### Math of Occupancy modeling
 
+$$
+\begin{aligned}
+  \ p* = 1 -  \left( 1 - p \right)^t \
+\end{aligned}
+$$
+
+
+$$
+\begin{aligned}
+  \psi & = \frac{Sd}{S \times\ p*} \
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+  \psi & = \frac{Sd}{S \times\ p*} \
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+  \psi = \frac{exp(Cov \times\ \beta)}{1 + exp(Cov \times\ \beta)} \
+\end{aligned}
+$$
+
 ### History of occupancy modeling software's and it's limitation (the need for DiversityOccupancy)
 
 ### Comparison of DiversityOccupancy and other occupancy softwares (TABLE)
@@ -123,9 +148,16 @@ As an example we probide part of the  dataset collected in Pohnpei Island \citep
 
 ## Pohnpei in the federal states of micronesia
 
-The Island of Pohnpei is a 334 squared kilometer island, in Oceania. it is the largest and most populated Island in the Federal States of Micronesia. Like every oceanic Island it has high endemism. It has a rich mosaic of ecosystems composed by manglars, palm forest, dwarf forests among others \citep{raynor1994resource}.
+The Island of Pohnpei is a 334 squared kilometer island, in Oceania. it is the largest and most populated Island in the Federal States of Micronesia. Like every oceanic Island it has high endemism. It has a rich mosaic of ecosystems composed by manglars, palm forest, dwarf forests among others \citep{raynor1994resource, buden2000comparison, merlin2005kava}.
 
 ## Bird Species
+
+$$
+\begin{aligned}
+  \dot{x} & = \sigma(y-x) \\
+  \dot{y} & = \rho x- y - xz 
+\end{aligned}
+$$
 
 # Use of the package
 
