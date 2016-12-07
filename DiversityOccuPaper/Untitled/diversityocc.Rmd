@@ -69,6 +69,26 @@ Occupancy models use detection-nondetection data from repeat surveys to simultan
 library(knitr)
 ```
 
+## Occupancy modeling
+
+### Imperfect detection and the need for occupancy modeling
+
+### History of occupancy modeling
+
+### Math of Occupancy modeling
+
+### History of occupancy modeling software's and it's limitation (the need for DiversityOccupancy)
+
+### Comparison of DiversityOccupancy and other occupancy softwares (TABLE)
+
+- camptrapR (\proglang{R})
+- downscale (\proglang{R})
+- hillmakerR (\proglang{R})
+- pom (\proglang{R})
+- Presence
+- stocc (\proglang{R})
+- Unmarked (\proglang{R})
+
 ## Installing DiversityOccupancy
 
 ### Requirements
@@ -84,6 +104,28 @@ install.packages("DiversityOccupancy")
 ```
 
 ## Objectives of the Package
+
+## Multiple species occupancy modeling
+
+## Abundance from multiple species occupancy modeling
+
+## Diversity from abundance
+
+## Spacially explicit predictions
+
+## Selection of priority areas
+
+## Graphical advantages from the package
+
+## Example dataset
+
+As an example we probide part of the  dataset collected in Pohnpei Island \citep{oleiro2014avian}, containing the detection history of five species in four consecutive days in 120 different locations of the Island. 
+
+## Pohnpei in the federal states of micronesia
+
+The Island of Pohnpei is a 334 squared kilometer island, in Oceania. it is the largest and most populated Island in the Federal States of Micronesia. Like every oceanic Island it has high endemism. It has a rich mosaic of ecosystems composed by manglars, palm forest, dwarf forests among others \citep{raynor1994resource}.
+
+## Bird Species
 
 # Use of the package
 
@@ -180,7 +222,7 @@ birdDiversity$models[[2]]
 birdmodel.selected$models[[2]]
 ```
 
-The responses of individual species to specific variables can be shown using the function respnseplot.abund, bellow we show the response of abundance in species 2 to the Burn intensity soil. Note that this function automatically bounds the limits of the variable to the maximum and minimum observable values in the field.
+The responses of individual species to specific variables can be shown using the function responseplot.abund.abund, bellow we show the response of abundance in species 2 to the Burn intensity soil. Note that this function automatically bounds the limits of the variable to the maximum and minimum observable values in the field.
 
 ```{r, warning=FALSE, message=FALSE}
 responseplot.abund(birdmodel.selected, spp = 2, variable = Elev)
