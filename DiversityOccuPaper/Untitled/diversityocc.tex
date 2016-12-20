@@ -5,7 +5,7 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \author{
-Derek Corcoran\\University of Missouri \And Elisabeth Webb\\University of Missouri, USGS \And Dylan Kesler\\Institute for Bird Populations
+Derek Corcoran\\University of Missouri \And Elisabeth Webb\\University of Missouri, USGS \And Dylan Kesler\\Institute for Bird Populations \And Nicole Michel\\National Audubon Society
 }
 \title{Selecting priority areas from diversity and individual species abundance
 \pkg{DiversityOccupancy}}
@@ -25,7 +25,7 @@ that contain both high abundance of species of conservation concern and
 high species diversity.
 }
 
-\Plainauthor{Derek Corcoran, Elisabeth Webb, Dylan Kesler}
+\Plainauthor{Derek Corcoran, Elisabeth Webb, Dylan Kesler, Nicole Michel}
 \Shorttitle{\pkg{DiversityOccupancy}: Selecting Priority Areas}
 \Plainkeywords{keywords, not capitalized, Occupancy modeling}
 
@@ -43,17 +43,11 @@ high species diversity.
   First line Second line\\
   E-mail: \href{mailto:corcoranbarriosd@missouri.edu}{\nolinkurl{corcoranbarriosd@missouri.edu}}\\
   URL: \url{http://rstudio.com}\\~\\
-      }
+        }
 
 \usepackage{amsmath}
 
 \begin{document}
-
-\begin{CodeChunk}
-\begin{CodeOutput}
-Warning: package 'knitr' was built under R version 3.2.5
-\end{CodeOutput}
-\end{CodeChunk}
 
 \section{Introduction}\label{introduction}
 
@@ -144,6 +138,13 @@ standardized all continuous site covariates t
 \subsubsection{Imperfect detection and the need for occupancy
 modeling}\label{imperfect-detection-and-the-need-for-occupancy-modeling}
 
+One of the main objectives of ecology is to study the abundance and
+distribution of species and populations. For management also it is
+important to actively monitor many species, the main problem with this
+is that many species have imperfect detection, that is we could survey
+Occupancy models use detection-nondetection data from repeat surveys to
+simultaneously estimate probabilities of detection and occupancy.
+
 \subsubsection{History of occupancy
 modeling}\label{history-of-occupancy-modeling}
 
@@ -200,6 +201,24 @@ softwares
   Unmarked (\proglang{R})
 \end{itemize}
 
+\begin{tabular}{l|l|l|l|l|l|l|l|l}
+\hline
+X & camptrapR & DiversityOccupancy & downscale & hillmakerR & pom & presence & stocc & unmarked\\
+\hline
+Single Species Single Season & NA & X & NA & NA & NA & NA & NA & X\\
+\hline
+Multiple Species Single Season & NA & X & NA & NA & NA & NA & NA & NA\\
+\hline
+Single Species Abundance & NA & X & NA & NA & NA & NA & NA & X\\
+\hline
+Multiple Species Abundance & NA & X & NA & NA & NA & NA & NA & NA\\
+\hline
+Single Species Dynamic & NA & NA & NA & NA & NA & NA & NA & X\\
+\hline
+Built in response plot & NA & X & NA & NA & NA & NA & NA & NA\\
+\hline
+\end{tabular}
+
 \subsection{Installing
 DiversityOccupancy}\label{installing-diversityoccupancy}
 
@@ -214,31 +233,33 @@ current version).
 Install from cran repository
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-install.packages("DiversityOccupancy")
+R> install.packages("DiversityOccupancy")
 \end{CodeInput}
 \end{CodeChunk}
 
-\subsection{Objectives of the Package}\label{objectives-of-the-package}
+\subsubsection{Objectives of the
+Package}\label{objectives-of-the-package}
 
-\subsection{Multiple species occupancy
+\subsubsection{Multiple species occupancy
 modeling}\label{multiple-species-occupancy-modeling}
 
-\subsection{Abundance from multiple species occupancy
+\subsubsection{Abundance from multiple species occupancy
 modeling}\label{abundance-from-multiple-species-occupancy-modeling}
 
-\subsection{Diversity from abundance}\label{diversity-from-abundance}
+\subsubsection{Diversity from abundance}\label{diversity-from-abundance}
 
-\subsection{Spacially explicit
+\subsubsection{Spacially explicit
 predictions}\label{spacially-explicit-predictions}
 
-\subsection{Selection of priority
+\subsubsection{Selection of priority
 areas}\label{selection-of-priority-areas}
 
-\subsection{Graphical advantages from the
+\subsubsection{Graphical advantages from the
 package}\label{graphical-advantages-from-the-package}
 
-\subsection{Example dataset}\label{example-dataset}
+\subsubsection{Example dataset}\label{example-dataset}
 
 As an example we probide part of the dataset collected in Pohnpei Island
 \citep{oleiro2014avian}, containing the detection history of five
@@ -282,19 +303,24 @@ and a 0 for each time it was not detected.
 A detection for the first two species is presented below:
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-library(DiversityOccupancy)
+R> library(DiversityOccupancy)
 \end{CodeInput}
+
 \begin{CodeOutput}
 Warning: package 'lattice' was built under R version 3.2.5
 \end{CodeOutput}
+
 \begin{CodeOutput}
 Warning: package 'Rcpp' was built under R version 3.2.5
 \end{CodeOutput}
+
 \begin{CodeInput}
-data("IslandBirds")
-head(IslandBirds[1:8], 10)
+R> data("IslandBirds")
+R> head(IslandBirds[1:8], 10)
 \end{CodeInput}
+
 \begin{CodeOutput}
    CICA.1 CICA.2 CICA.3 CICA.4 CIRW.1 CIRW.2 CIRW.3 CIRW.4
 1       0      0      0      0      0      0      0      0
@@ -320,13 +346,15 @@ stable within the scope of the length of the study. In
 IslandBirds data set called siteCov:
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-data("siteCov")
-head(siteCov, 10)
+R> data("siteCov")
+R> head(siteCov, 10)
 \end{CodeInput}
 \end{CodeChunk}
 
 \begin{CodeChunk}
+
 \begin{CodeOutput}
    Elev     AgroFo      SecVec Wetland    Upland
 1 214.6 0.04536772 0.309614772       0 0.6450175
@@ -350,17 +378,21 @@ These variables are used to model the probability of detection.
 illustrates how the Daily covariates have to be structured:
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-#All the items of the ist must have names
-names(Daily_Cov)
+R> #All the items of the ist must have names
+R> names(Daily_Cov)
 \end{CodeInput}
+
 \begin{CodeOutput}
 [1] "Day"    "Wind"   "Obs"    "Time"   "Rain"   "Noise"  "Clouds"
 \end{CodeOutput}
+
 \begin{CodeInput}
-#here we see the first dataframe of the Daily_Cov dataset
-head(Daily_Cov[[1]])
+R> #here we see the first dataframe of the Daily_Cov dataset
+R> head(Daily_Cov[[1]])
 \end{CodeInput}
+
 \begin{CodeOutput}
    Day1 Day2 Day3 Day4
 3    25   27   33   42
@@ -379,19 +411,30 @@ In this example we will fit and model the abundance for 5 bird species
 and calculate alpha diversity from those results.
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-birdDiversity <-diversityoccu(pres = IslandBirds, sitecov = siteCov,
-obscov = Daily_Cov,spp =  5, form = ~ Day + Wind + Time ~ Elev + Wetland + Upland, dredge = FALSE)
+R> birdDiversity <-diversityoccu(pres = IslandBirds, sitecov = siteCov,
+R+ obscov = Daily_Cov,spp =  5, form = ~ Day + Wind + Time ~ Elev + Wetland + Upland, dredge = FALSE)
 \end{CodeInput}
+
+\begin{CodeOutput}
+[1] "Species 1 ready!"
+[1] "Species 2 ready!"
+[1] "Species 3 ready!"
+[1] "Species 4 ready!"
+[1] "Species 5 ready!"
+\end{CodeOutput}
 \end{CodeChunk}
 
 The resulting object of class diversityoccupancy has the following
 elements
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-names(birdDiversity)
+R> names(birdDiversity)
 \end{CodeInput}
+
 \begin{CodeOutput}
 [1] "Covs"      "models"    "Diversity" "species"  
 \end{CodeOutput}
@@ -402,13 +445,15 @@ you call the species number with the element\$models. For example
 extract the model for the second species:
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-birdDiversity$models[[2]]
+R> birdDiversity$models[[2]]
 \end{CodeInput}
+
 \begin{CodeOutput}
 
 Call:
-occuRN(formula = form, data = models[[i]])
+occuRN(formula = form, data = data2)
 
 Abundance:
              Estimate       SE      z P(>|z|)
@@ -431,9 +476,11 @@ AIC: 208.1134
 The species parameter for a diversityoccupancy object shows us a table with the abundance and alpha diversity calculated for each sampled point:
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-summary(birdDiversity$species)
+R> summary(birdDiversity$species)
 \end{CodeInput}
+
 \begin{CodeOutput}
        h            species.1        species.2        species.3       species.4     
  Min.   :0.9332   Min.   :0.1863   Min.   :0.0000   Min.   :1.636   Min.   :0.1107  
@@ -465,7 +512,7 @@ and table shows the processing time for the IslandBirds data set.
 \begin{CodeChunk}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-13-1} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-14-1} \end{center}
 
 \end{CodeChunk}
 
@@ -473,10 +520,19 @@ From now on we will work with automatically selected models for bird
 abundance and diversity using an information theoretic approach (AICc).
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-birdmodel.selected <- diversityoccu(pres = IslandBirds, sitecov = siteCov,
-obscov = Daily_Cov,spp =  5, form = ~ Day + Wind + Time ~ Elev + Wetland + Upland, dredge = TRUE)
+R> birdmodel.selected <- diversityoccu(pres = IslandBirds, sitecov = siteCov,
+R+ obscov = Daily_Cov,spp =  5, form = ~ Day + Wind + Time ~ Elev + Wetland + Upland, dredge = TRUE)
 \end{CodeInput}
+
+\begin{CodeOutput}
+[1] "Species 1 ready!"
+[1] "Species 2 ready!"
+[1] "Species 3 ready!"
+[1] "Species 4 ready!"
+[1] "Species 5 ready!"
+\end{CodeOutput}
 \end{CodeChunk}
 
 Below we present an example of an analysis with the full model (includes
@@ -484,13 +540,15 @@ all variables) and subsequently results from a model selection analysis,
 both of them only for the second species:
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-birdDiversity$models[[2]]
+R> birdDiversity$models[[2]]
 \end{CodeInput}
+
 \begin{CodeOutput}
 
 Call:
-occuRN(formula = form, data = models[[i]])
+occuRN(formula = form, data = data2)
 
 Abundance:
              Estimate       SE      z P(>|z|)
@@ -508,9 +566,11 @@ Time        -0.00114 0.00375 -0.305  0.7605
 
 AIC: 208.1134 
 \end{CodeOutput}
+
 \begin{CodeInput}
-birdmodel.selected$models[[2]]
+R> birdmodel.selected$models[[2]]
 \end{CodeInput}
+
 \begin{CodeOutput}
 
 Call:
@@ -538,12 +598,13 @@ function automatically bounds the limits of the variable to the maximum
 and minimum observable values in the field.
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-responseplot.abund(birdmodel.selected, spp = 2, variable = Elev)
+R> responseplot.abund(birdmodel.selected, spp = 2, variable = Elev)
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-16-1} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-17-1} \end{center}
 
 \end{CodeChunk}
 
@@ -563,30 +624,31 @@ only linear combinations when set to FALSE (Default), and both linear
 and quadratic (second order) if set to TRUE.
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-glm.BirdDiverse <- model.diversity(birdmodel.selected, method = "g", delta = 2, 
-squared = TRUE)
+R> glm.BirdDiverse <- model.diversity(birdmodel.selected, method = "g", delta = 2, 
+R+ squared = TRUE)
 \end{CodeInput}
 \end{CodeChunk}
 
 To see the top models extract the Table element of the modelselection
 object
 
-\textbackslash{}begin\{CodeChunk\} \textbackslash{}begin\{CodeOutput\}
-model 1 Diversity \textasciitilde{} 1 + Elev + AgroFo + Wetland +
-I(Elev\^{}2) + I(AgroFo\^{}2) + I(SecVec\^{}2) + I(Wetland\^{}2) +
-I(Upland\^{}2) 2 Diversity \textasciitilde{} 1 + Elev + AgroFo + Wetland
-+ I(Elev\^{}2) + I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) 3
-Diversity \textasciitilde{} 1 + Elev + AgroFo + Wetland + Upland +
-I(Elev\^{}2) + I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) 4
-Diversity \textasciitilde{} 1 + Elev + SecVec + Wetland + Upland +
-I(Elev\^{}2) + I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) 5
-Diversity \textasciitilde{} 1 + Elev + AgroFo + SecVec + Wetland +
-I(Elev\^{}2) + I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) aicc
-weights Delta.AICc 1 -681.3992 0.2610582 0.0000000 2 -681.1351 0.2287691
-0.2640605 3 -680.7723 0.1908161 0.6268668 4 -680.4609 0.1632999
-0.9383094 5 -680.3701 0.1560568 1.0290469
-\textbackslash{}end\{CodeOutput\} \textbackslash{}end\{CodeChunk\}
+\textbackslash{}begin\{CodeChunk\}
+
+\textbackslash{}begin\{CodeOutput\} model 1 Diversity \textasciitilde{}
+1 + Elev + AgroFo + Wetland + I(Elev\^{}2) + I(AgroFo\^{}2) +
+I(SecVec\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) 2 Diversity
+\textasciitilde{} 1 + Elev + AgroFo + Wetland + I(Elev\^{}2) +
+I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) 3 Diversity
+\textasciitilde{} 1 + Elev + AgroFo + Wetland + Upland + I(Elev\^{}2) +
+I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) 4 Diversity
+\textasciitilde{} 1 + Elev + AgroFo + SecVec + Wetland + I(Elev\^{}2) +
+I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) aicc weights
+Delta.AICc 1 -681.3992 0.3120093 0.0000000 2 -681.1351 0.2734182
+0.2640605 3 -680.7723 0.2280579 0.6268668 4 -680.3701 0.1865146
+1.0290469 \textbackslash{}end\{CodeOutput\}
+\textbackslash{}end\{CodeChunk\}
 
 The responseplot.diver function takes a modeldiversity object and one of
 the variables used to predict the alpha diversity index, and makes a
@@ -596,12 +658,13 @@ to the maximum and minimum values of the dataset. It also shows the
 standard deviation of the estimation.
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-responseplot.diver(glm.BirdDiverse, Elev)
+R> responseplot.diver(glm.BirdDiverse, Elev)
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-19-1} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-20-1} \end{center}
 
 \end{CodeChunk}
 
@@ -609,28 +672,31 @@ Also since the returned plot is a ggplot type object, it can be easily
 modified following ggplot2 grammar of graphics.
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-library(ggplot2)
-k <- responseplot.diver(glm.BirdDiverse, Elev)
-k
+R> library(ggplot2)
+R> k <- responseplot.diver(glm.BirdDiverse, Elev)
+R> k
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-20-1} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-21-1} \end{center}
+
 
 \begin{CodeInput}
-k + theme_gray()
+R> k + theme_gray()
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-20-2} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-21-2} \end{center}
+
 
 \begin{CodeInput}
-k + ylim(c(0,1))
+R> k + ylim(c(0,1))
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-20-3} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-21-3} \end{center}
 
 \end{CodeChunk}
 
@@ -648,42 +714,51 @@ order for this function to work properly the stack has to be in lon lat
 projection, and Birdstack is in UTM, so we reproject the data.
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-library(raster)
+R> library(raster)
 \end{CodeInput}
+
 \begin{CodeOutput}
 Loading required package: sp
 \end{CodeOutput}
+
 \begin{CodeOutput}
 
 Attaching package: 'sp'
 \end{CodeOutput}
+
 \begin{CodeOutput}
 The following object is masked from 'package:unmarked':
 
     coordinates
 \end{CodeOutput}
+
 \begin{CodeOutput}
 
 Attaching package: 'raster'
 \end{CodeOutput}
+
 \begin{CodeOutput}
 The following objects are masked from 'package:unmarked':
 
     getData, projection
 \end{CodeOutput}
+
 \begin{CodeInput}
-data(Birdstack)
-plot(Birdstack)
+R> data(Birdstack)
+R> plot(Birdstack)
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-21-1} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-22-1} \end{center}
+
 
 \begin{CodeInput}
-newproj <- '+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0'
-library(rgdal)
+R> newproj <- '+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0'
+R> library(rgdal)
 \end{CodeInput}
+
 \begin{CodeOutput}
 rgdal: version: 1.1-10, (SVN revision 622)
  Geospatial Data Abstraction Library extensions to R successfully loaded
@@ -694,8 +769,9 @@ rgdal: version: 1.1-10, (SVN revision 622)
  Path to PROJ.4 shared files: C:/Users/corcoranbarriosd/Documents/R/win-library/3.2/rgdal/proj
  Linking to sp version: 1.2-3 
 \end{CodeOutput}
+
 \begin{CodeInput}
-Birdstack <- stack(projectRaster(Birdstack, crs=newproj))
+R> Birdstack <- stack(projectRaster(Birdstack, crs=newproj))
 \end{CodeInput}
 \end{CodeChunk}
 
@@ -717,7 +793,7 @@ c(F,T,T,F,F))
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-22-1} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-23-1} \end{center}
 
 \end{CodeChunk}
 
