@@ -1,7 +1,10 @@
-,camptrapR,DiversityOccupancy,downscale,hillmakerR,pom,presence,stocc,unmarked
-Single Species Single Season,,X,,,,,,X
-Multiple Species Single Season,,X,,,,,,
-Single Species Abundance,,X,,,,,,X
-Multiple Species Abundance,,X,,,,,,
-Single Species Dynamic ,,,,,,,,X
-Built in response plot,,X,,,,,,
+,Diversityoccupancy,Unmarked,stocc,Presence,Pom,camptrapR
+Single Species Single Season occupancy,x,x,x,x,x,x
+Multiple Species Single Season occupancy,x,,,,,
+Single Species Abundance,x,x,,x,,
+Multiple Species Abundance,x,,,,,
+Alpha diversity models,x,,,,,
+Single Species Dynamic occupancy,,x,,x,,
+Priority area selection,x,,,,,
+Build in model selection,x,,,,,
+Built in response plot,x,,,,,

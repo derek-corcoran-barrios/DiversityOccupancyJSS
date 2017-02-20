@@ -2,7 +2,7 @@
 <kml xmlns="http://www.opengis.net/kml/2.2">
 <GroundOverlay>
 <name>layer</name>
-<Icon><href>priority_area.png</href><viewBoundScale>0.75</viewBoundScale></Icon>
+<Icon><href>Priority_Area.png</href><viewBoundScale>0.75</viewBoundScale></Icon>
 	<LatLonBox>
 		<north>7.01555858288215</north><south>6.76025058288215</south><east>158.367129390674</east><west>158.107207390674</west>
 	</LatLonBox>

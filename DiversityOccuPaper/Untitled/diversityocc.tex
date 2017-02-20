@@ -5,27 +5,28 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \author{
-Derek Corcoran\\University of Missouri \And Elisabeth Webb\\University of Missouri, USGS \And Dylan Kesler\\Institute for Bird Populations \And Nicole Michel\\National Audubon Society
+Derek Corcoran\\University of Missouri \And Elisabeth Webb\\University of Missouri, USGS \And Dylan Kesler\\Institute for Bird Populations
 }
-\title{Selecting priority areas from diversity and individual species abundance
-\pkg{DiversityOccupancy}}
-\Keywords{\pkg{DiversityOccupancy}, Occupancy Modeling, \proglang{R}}
+\title{\pkg{DiversityOccupancy}: A package to model occupancy, abundance,
+diversity and selection of prioriry areas based on repeated
+presence-absence sampling}
+\Keywords{\pkg{DiversityOccupancy}, Occupancy Modeling, \proglang{R}, alpha diversity, Protected areas}
 
 \Abstract{
-Lately occupancy modeling has been widely used as a tool for ecological
-research and management planning, most often in the context of single
-species models. We present the package \pkg{DiversityOccupancy} in the
+Occupancy modeling has been widely used as a tool for ecological
+research and management planning in the context of single species
+models. We present the package \pkg{DiversityOccupancy} in the
 \proglang{R} environment. The objective of this package is to
 simultaneously model factors associated with occupancy and abundance of
-individual species using a detection history file, and to use predicted
-abundances to calculate species diversity for each sampling site. The
-package then models factor(s) associated with among-site species
-diversity, which can be combined with spatial data to identify areas
-that contain both high abundance of species of conservation concern and
-high species diversity.
+individual species using a detection history to model occupancy and/or
+abundance. This new package also uses predicted abundances to calculate
+species diversity for each sampling site. \pkg{DiversityOccupancy}
+models factor(s) associated with among-site species diversity, which can
+be combined with spatial data to identify areas that contain both high
+abundance of species of conservation concern and high species diversity.
 }
 
-\Plainauthor{Derek Corcoran, Elisabeth Webb, Dylan Kesler, Nicole Michel}
+\Plainauthor{Derek Corcoran, Elisabeth Webb, Dylan Kesler}
 \Shorttitle{\pkg{DiversityOccupancy}: Selecting Priority Areas}
 \Plainkeywords{keywords, not capitalized, Occupancy modeling}
 
@@ -43,13 +44,48 @@ high species diversity.
   First line Second line\\
   E-mail: \href{mailto:corcoranbarriosd@missouri.edu}{\nolinkurl{corcoranbarriosd@missouri.edu}}\\
   URL: \url{http://rstudio.com}\\~\\
-        }
+      }
 
 \usepackage{amsmath}
 
 \begin{document}
 
 \section{Introduction}\label{introduction}
+
+\subsection{Imperfect detection in wildlife
+surveys}\label{imperfect-detection-in-wildlife-surveys}
+
+One of the main objectives of ecology is to study the abundance and
+distribution of species and populations. The problem is that estimation
+of population is time consuming, hard to replicate and almost impossible
+in rare species due to the fact that they are hard to detect, which
+leads to false absences that might cause underestimation of abundances
+and distribution. Despite this, most sampling and analysis techniques
+don't take into account the inherent imperfect detection found in
+natural populations. One of the tools used to overcome this limitation
+is occupancy modeling.
+
+\subsection{Occupancy models, taking into account detection
+probability}\label{occupancy-models-taking-into-account-detection-probability}
+
+In the last decade, Occupancy modeling has been increasingly used as a
+method to account for how species respond to environmental or
+anthropogenic factors. It has also been shown to be useful as a species
+distribution-modeling tool when species have imperfect detection.
+Another use for what it has been used is for managers to change the
+environment of managed areas in order to improve the status of species
+of conservation concern
+\citep{mackenzie_estimating_2002, mackenzie2006occupancy} but as far as
+we know this is the first method that takes into account both species
+diversity and individual species abundance in order to select
+conservation areas. Occupancy models use detection-nondetection data
+from repeat surveys to simultaneously estimate probabilities of
+detection (p) and occupancy \(\psi\) (Kellner and Swihart 2014,
+MacKenzie 2006). Occupancy is defined as the proportion of habitat
+occupied by a species (MacKenzie et al. 2002)
+
+\subsection{Occupancy modeling y formulacion
+matematica}\label{occupancy-modeling-y-formulacion-matematica}
 
 \subsection{Single-species or multiple-species
 management}\label{single-species-or-multiple-species-management}
@@ -130,7 +166,7 @@ conservation areas.
 
 Occupancy models use detection-nondetection data from repeat surveys to
 simultaneously estimate probabilities of detection (p) and occupancy
-(psi) \citep{mackenzie2006occupancy}. \citep{burnham2003model}. We
+(\(\psi\)) \citep{mackenzie2006occupancy}. \citep{burnham2003model}. We
 standardized all continuous site covariates t
 
 \subsection{Occupancy modeling}\label{occupancy-modeling}
@@ -139,17 +175,32 @@ standardized all continuous site covariates t
 modeling}\label{imperfect-detection-and-the-need-for-occupancy-modeling}
 
 One of the main objectives of ecology is to study the abundance and
-distribution of species and populations. For management also it is
-important to actively monitor many species, the main problem with this
-is that many species have imperfect detection, that is we could survey
-Occupancy models use detection-nondetection data from repeat surveys to
-simultaneously estimate probabilities of detection and occupancy.
+distribution of species and populations. The problem is that estimation
+of population is time consuming, hard to replicate and almost impossible
+in rare species due to the fact that they are really hard to detect,
+whic leads to false absences that might bias estimates. Despite this
+most sampling and analysis techniques don't deal with imperfect
+detection. Occupancy models use detection-nondetection data from repeat
+surveys to simultaneously estimate probabilities of detection and
+occupancy \citep{kellner2014accounting}. Occupancy is defined as the
+proportion of habitat occupied by a species
+\citep{mackenzie_estimating_2002}
 
 \subsubsection{History of occupancy
 modeling}\label{history-of-occupancy-modeling}
 
+Occupancy modeling was first proposed in 2002
+\citep{mackenzie_estimating_2002}
+
 \subsubsection{Math of Occupancy
 modeling}\label{math-of-occupancy-modeling}
+
+Lets suppose we are trying to determine the probability of a species
+presence in a site (\(\psi\)), given the probability of detection (p).
+There are t Trials in the field to detect the species in a site, and the
+detections (1) and non-detections (0) are tallied as a detection
+history. Then after the estimation of p, we can say that the cumulative
+probability of detection is:
 
 \[
 \begin{aligned}
@@ -157,17 +208,18 @@ modeling}\label{math-of-occupancy-modeling}
 \end{aligned}
 \]
 
-\[
-\begin{aligned}
-  \psi & = \frac{Sd}{S \times\ p*} \
-\end{aligned}
-\]
+If S sites are sampled and the species was detected Sd times, our
+estimation of \(\psi\) is:
 
 \[
 \begin{aligned}
   \psi & = \frac{Sd}{S \times\ p*} \
 \end{aligned}
 \]
+
+Furthermore, both the probability of detection (p) and occupancy
+(\(\psi\)) may be a function of covariates. We can extent the model to
+include covaiates using the following formula.
 
 \[
 \begin{aligned}
@@ -201,23 +253,29 @@ softwares
   Unmarked (\proglang{R})
 \end{itemize}
 
-\begin{tabular}{l|l|l|l|l|l|l|l|l}
-\hline
-X & camptrapR & DiversityOccupancy & downscale & hillmakerR & pom & presence & stocc & unmarked\\
-\hline
-Single Species Single Season & NA & X & NA & NA & NA & NA & NA & X\\
-\hline
-Multiple Species Single Season & NA & X & NA & NA & NA & NA & NA & NA\\
-\hline
-Single Species Abundance & NA & X & NA & NA & NA & NA & NA & X\\
-\hline
-Multiple Species Abundance & NA & X & NA & NA & NA & NA & NA & NA\\
-\hline
-Single Species Dynamic & NA & NA & NA & NA & NA & NA & NA & X\\
-\hline
-Built in response plot & NA & X & NA & NA & NA & NA & NA & NA\\
-\hline
+\% latex table generated in R 3.2.4 by xtable 1.8-2 package \% Mon Feb
+20 15:34:32 2017
+
+\begin{table}[ht]
+\centering
+\scalebox{0.75}{
+\begin{tabular}{cccccccc}
+  \hline
+ &  & Diversityoccupancy & Unmarked & stocc & Presence & Pom & camptrapR \\ 
+  \hline
+1 & Single Species Single Season occupancy & x & x & x & x & x & x \\ 
+  2 & Multiple Species Single Season occupancy & x &  &  &  &  &  \\ 
+  3 & Single Species Abundance & x & x &  & x &  &  \\ 
+  4 & Multiple Species Abundance & x &  &  &  &  &  \\ 
+  5 & Alpha diversity models & x &  &  &  &  &  \\ 
+  6 & Single Species Dynamic occupancy &  & x &  & x &  &  \\ 
+  7 & Priority area selection & x &  &  &  &  &  \\ 
+  8 & Build in model selection & x &  &  &  &  &  \\ 
+  9 & Built in response plot & x &  &  &  &  &  \\ 
+   \hline
 \end{tabular}
+}
+\end{table}
 
 \subsection{Installing
 DiversityOccupancy}\label{installing-diversityoccupancy}
@@ -404,6 +462,227 @@ R> head(Daily_Cov[[1]])
 \end{CodeOutput}
 \end{CodeChunk}
 
+\subsection{Fiting models for
+occupancy}\label{fiting-models-for-occupancy}
+
+As an example of batch fitting occupancy models, we will use the
+\emph{IslandBirds} dataset, at first we will do a simple occupancy model
+without automatic model selection:
+
+\begin{CodeChunk}
+
+\begin{CodeInput}
+R> BirdOccupancy <-batchoccu(pres = IslandBirds, sitecov = siteCov, obscov = Daily_Cov, spp =  5, form = ~ Day + Wind + Rain + Noise + Clouds ~
+R+ Elev + AgroFo + SecVec + Wetland)
+\end{CodeInput}
+
+\begin{CodeOutput}
+[1] "Species 1 ready!"
+[1] "Species 2 ready!"
+[1] "Species 3 ready!"
+[1] "Species 4 ready!"
+[1] "Species 5 ready!"
+\end{CodeOutput}
+\end{CodeChunk}
+
+In this case \emph{pres} expects the detection history file explained
+above, \emph{sitecov}, expects a dataframe with the covariates used to
+estimate occupancy, \emph{obscov} is a list of dataframes with the
+variables expected to affect the probability of detection, \emph{spp} is
+the number of species in the \emph{pres} file, and \emph{form} is the
+formula used to fit the model
+
+This creates an object of the class \emph{batchoccupancy} We can check
+the fitted model accesing the \emph{models} element
+
+\textbackslash{}begin\{CodeChunk\}
+
+\textbackslash{}begin\{CodeInput\} R\textgreater{} BirdOccupancy\$models
+\textbackslash{}end\{CodeInput\}
+
+\begin{CodeOutput}
+[[1]]
+
+Call:
+occu(formula = form, data = data2)
+
+Occupancy:
+            Estimate     SE      z P(>|z|)
+(Intercept)  -10.012  20.73 -0.483   0.629
+Elev           0.508   0.77  0.659   0.510
+AgroFo      -100.296 138.41 -0.725   0.469
+SecVec      -408.270    NaN    NaN     NaN
+Wetland       13.093  20.65  0.634   0.526
+
+Detection:
+            Estimate     SE      z P(>|z|)
+(Intercept) -3.34368 0.9853 -3.393 0.00069
+Day          0.03082 0.0224  1.375 0.16898
+Wind        -0.41709 0.2346 -1.778 0.07543
+Rain        -0.42307 0.7931 -0.533 0.59373
+Noise       -0.06591 0.1909 -0.345 0.72985
+Clouds       0.00131 0.0085  0.154 0.87797
+
+AIC: 144.0011 
+
+[[2]]
+
+Call:
+occu(formula = form, data = data2)
+
+Occupancy:
+             Estimate       SE      z P(>|z|)
+(Intercept)  5.32e-01 7.78e-01  0.685  0.4936
+Elev        -4.96e-03 2.29e-03 -2.168  0.0301
+AgroFo       6.28e-01 1.45e+00  0.433  0.6653
+SecVec       1.21e+00 1.74e+00  0.694  0.4874
+Wetland     -1.55e+02 4.44e+02 -0.350  0.7266
+
+Detection:
+            Estimate      SE       z P(>|z|)
+(Intercept) -2.42376 0.78176 -3.1004 0.00193
+Day          0.03711 0.02031  1.8267 0.06775
+Wind         0.01807 0.20904  0.0865 0.93111
+Rain        -0.55340 0.90311 -0.6128 0.54003
+Noise       -0.41490 0.19083 -2.1743 0.02969
+Clouds       0.00802 0.00853  0.9398 0.34734
+
+AIC: 206.9414 
+
+[[3]]
+
+Call:
+occu(formula = form, data = data2)
+
+Occupancy:
+            Estimate     SE     z P(>|z|)
+(Intercept)  -3.4645 1.9877 -1.74  0.0813
+Elev          0.0473 0.0246  1.92  0.0546
+AgroFo       -5.5331 3.2742 -1.69  0.0910
+SecVec       12.3461 9.7284  1.27  0.2044
+Wetland       3.4146 2.2217  1.54  0.1243
+
+Detection:
+            Estimate      SE       z P(>|z|)
+(Intercept) -1.46061 0.61125 -2.3896  0.0169
+Day          0.00864 0.01551  0.5573  0.5773
+Wind         0.01269 0.15015  0.0845  0.9326
+Rain        -0.53391 0.57192 -0.9335  0.3505
+Noise       -0.27912 0.12870 -2.1687  0.0301
+Clouds      -0.00144 0.00539 -0.2672  0.7893
+
+AIC: 316.6923 
+
+[[4]]
+
+Call:
+occu(formula = form, data = data2)
+
+Occupancy:
+            Estimate      SE      z P(>|z|)
+(Intercept)  -0.3594 0.96212 -0.374  0.7087
+Elev          0.0101 0.00662  1.518  0.1289
+AgroFo       -1.9886 1.10864 -1.794  0.0729
+SecVec       -0.3248 1.48768 -0.218  0.8272
+Wetland      -2.5379 1.47523 -1.720  0.0854
+
+Detection:
+            Estimate      SE      z P(>|z|)
+(Intercept)  0.37017 0.53559  0.691  0.4895
+Day         -0.01375 0.01310 -1.049  0.2940
+Wind         0.16717 0.12158  1.375  0.1692
+Rain         0.06358 0.31754  0.200  0.8413
+Noise       -0.17355 0.08924 -1.945  0.0518
+Clouds      -0.00423 0.00441 -0.959  0.3377
+
+AIC: 469.6008 
+
+[[5]]
+
+Call:
+occu(formula = form, data = data2)
+
+Occupancy:
+            Estimate      SE      z P(>|z|)
+(Intercept) -1.25268 0.53130 -2.358  0.0184
+Elev         0.00424 0.00199  2.133  0.0329
+AgroFo      -3.21615 1.49323 -2.154  0.0313
+SecVec      -0.85353 1.54730 -0.552  0.5812
+Wetland      1.31017 0.75086  1.745  0.0810
+
+Detection:
+             Estimate      SE       z P(>|z|)
+(Intercept)  0.891117 0.73667  1.2097   0.226
+Day         -0.020304 0.01586 -1.2802   0.200
+Wind        -0.158150 0.15018 -1.0531   0.292
+Rain        -0.294663 0.41554 -0.7091   0.478
+Noise        0.015623 0.10563  0.1479   0.882
+Clouds      -0.000341 0.00526 -0.0648   0.948
+
+AIC: 374.6705 
+\end{CodeOutput}
+
+\textbackslash{}end\{CodeChunk\}
+
+In order to do automatic model selection for the occupancy models, you
+have to change the option of dredge to TRUE:
+
+\begin{CodeChunk}
+
+\begin{CodeInput}
+R> BirdOccupancy <-batchoccu(pres = IslandBirds, sitecov = siteCov, obscov = Daily_Cov, spp =  5, form = ~ Day + Wind + Rain + Noise + Clouds ~
+R+ Elev + AgroFo + SecVec + Wetland, dredge = TRUE)
+\end{CodeInput}
+
+\begin{CodeOutput}
+[1] "Species 1 ready!"
+[1] "Species 2 ready!"
+[1] "Species 3 ready!"
+[1] "Species 4 ready!"
+[1] "Species 5 ready!"
+\end{CodeOutput}
+\end{CodeChunk}
+
+\subsubsection{Ploting the response of occupancy for each species and
+each
+variable}\label{ploting-the-response-of-occupancy-for-each-species-and-each-variable}
+
+\pkg{DiversityOccupancy}, has a build in function
+\emph{responseplot.occu} that will automatically plot the occupancy
+responce to the variation of any of the covariates from the
+\emph{sitecov} file. To use this function you need a
+\emph{batchoccupancy} model to feed the batch parameter, and then you
+have to select which species and variable to plot. In the next graph, we
+are ploting the responce of the fourth species (\emph{Rukia
+longirostra}), for elevation. This function automatically limits the
+variable of interest between the minimum and maximum value found in the
+field.
+
+\begin{CodeChunk}
+
+\begin{CodeInput}
+R> responseplot.occu(batch = BirdOccupancy, spp = 4, variable = Elev)
+\end{CodeInput}
+
+
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-13-1} \end{center}
+
+\end{CodeChunk}
+
+This next plot shows again, the response to elevation, but in this case
+for species 5 (\emph{Ducula oceanica}).
+
+\begin{CodeChunk}
+
+\begin{CodeInput}
+R> responseplot.occu(batch = BirdOccupancy, spp =  5, variable = Elev)
+\end{CodeInput}
+
+
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-14-1} \end{center}
+
+\end{CodeChunk}
+
 \subsection{Fiting models for abundance and predicting alpha
 diversity}\label{fiting-models-for-abundance-and-predicting-alpha-diversity}
 
@@ -512,7 +791,7 @@ and table shows the processing time for the IslandBirds data set.
 \begin{CodeChunk}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-14-1} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-19-1} \end{center}
 
 \end{CodeChunk}
 
@@ -604,7 +883,7 @@ R> responseplot.abund(birdmodel.selected, spp = 2, variable = Elev)
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-17-1} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-22-1} \end{center}
 
 \end{CodeChunk}
 
@@ -643,12 +922,14 @@ I(SecVec\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) 2 Diversity
 I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) 3 Diversity
 \textasciitilde{} 1 + Elev + AgroFo + Wetland + Upland + I(Elev\^{}2) +
 I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) 4 Diversity
+\textasciitilde{} 1 + Elev + SecVec + Wetland + Upland + I(Elev\^{}2) +
+I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) 5 Diversity
 \textasciitilde{} 1 + Elev + AgroFo + SecVec + Wetland + I(Elev\^{}2) +
 I(AgroFo\^{}2) + I(Wetland\^{}2) + I(Upland\^{}2) aicc weights
-Delta.AICc 1 -681.3992 0.3120093 0.0000000 2 -681.1351 0.2734182
-0.2640605 3 -680.7723 0.2280579 0.6268668 4 -680.3701 0.1865146
-1.0290469 \textbackslash{}end\{CodeOutput\}
-\textbackslash{}end\{CodeChunk\}
+Delta.AICc 1 -681.3992 0.2610582 0.0000000 2 -681.1351 0.2287691
+0.2640605 3 -680.7723 0.1908161 0.6268668 4 -680.4609 0.1632999
+0.9383094 5 -680.3701 0.1560568 1.0290469
+\textbackslash{}end\{CodeOutput\} \textbackslash{}end\{CodeChunk\}
 
 The responseplot.diver function takes a modeldiversity object and one of
 the variables used to predict the alpha diversity index, and makes a
@@ -664,7 +945,7 @@ R> responseplot.diver(glm.BirdDiverse, Elev)
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-20-1} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-25-1} \end{center}
 
 \end{CodeChunk}
 
@@ -675,12 +956,19 @@ modified following ggplot2 grammar of graphics.
 
 \begin{CodeInput}
 R> library(ggplot2)
+\end{CodeInput}
+
+\begin{CodeOutput}
+Warning: package 'ggplot2' was built under R version 3.2.5
+\end{CodeOutput}
+
+\begin{CodeInput}
 R> k <- responseplot.diver(glm.BirdDiverse, Elev)
 R> k
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-21-1} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-26-1} \end{center}
 
 
 \begin{CodeInput}
@@ -688,7 +976,7 @@ R> k + theme_gray()
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-21-2} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-26-2} \end{center}
 
 
 \begin{CodeInput}
@@ -696,7 +984,7 @@ R> k + ylim(c(0,1))
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-21-3} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-26-3} \end{center}
 
 \end{CodeChunk}
 
@@ -751,7 +1039,7 @@ R> plot(Birdstack)
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-22-1} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-27-1} \end{center}
 
 
 \begin{CodeInput}
@@ -787,13 +1075,14 @@ indicate conservation value (areas above the threshold will be
 returned).
 
 \begin{CodeChunk}
+
 \begin{CodeInput}
-Selected.area <- diversity.predict(model = birdmodel.selected, diverse = glm.BirdDiverse, new.data = Birdstack, quantile.nth = 0.65, species =
-c(F,T,T,F,F))
+R> Selected.area <- diversity.predict(model = birdmodel.selected, diverse = glm.BirdDiverse, new.data = Birdstack, quantile.nth = 0.65, species =
+R+ c(F,T,T,F,F))
 \end{CodeInput}
 
 
-\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-23-1} \end{center}
+\begin{center}\includegraphics{diversityocc_files/figure-latex/unnamed-chunk-28-1} \end{center}
 
 \end{CodeChunk}
 

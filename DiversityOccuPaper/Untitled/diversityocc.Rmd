@@ -11,16 +11,15 @@ author:
     affiliation: University of Missouri, USGS
   - name: Dylan Kesler
     affiliation: Institute for Bird Populations
-  - name: Nicole Michel
-    affiliation: National Audubon Society
 title:
-  formatted: "Selecting priority areas from diversity and individual species abundance \\pkg{DiversityOccupancy}"
+  formatted: "\\pkg{DiversityOccupancy}: A package to model occupancy, abundance, diversity and selection of prioriry areas based on repeated presence-absence sampling"
   short:     "\\pkg{DiversityOccupancy}: Selecting Priority Areas"
 abstract: >
-  Lately occupancy modeling has been widely used as a tool for ecological research and management planning, most often in the context of single species models. We present the package \pkg{DiversityOccupancy} in the \proglang{R} environment. The objective of this package is to simultaneously model factors associated with occupancy and abundance of individual species using a detection history file, and to use predicted abundances to calculate species diversity for each sampling site. The package then models factor(s) associated with among-site species diversity, which can be combined with spatial data to identify areas that contain both high abundance of species of conservation concern and high species diversity.
+  Occupancy modeling has been widely used as a tool for ecological research and management planning in the context of single species models. We present the package \pkg{DiversityOccupancy} in the \proglang{R} environment. The objective of this package is to simultaneously model factors associated with occupancy and abundance of individual species using a detection history to model occupancy and/or abundance. This new package also uses predicted abundances to calculate species diversity for each sampling site. \pkg{DiversityOccupancy} models factor(s) associated with among-site species diversity, which can be combined with spatial data to identify areas that contain both high abundance of species of conservation concern and high species diversity.
+  
 keywords:
   # at least one keyword must be supplied
-  formatted: [ "\\pkg{DiversityOccupancy}", Occupancy Modeling, "\\proglang{R}"]
+  formatted: [ "\\pkg{DiversityOccupancy}", Occupancy Modeling, "\\proglang{R}", alpha diversity, Protected areas]
   plain:     [keywords, not capitalized, Occupancy modeling]
 preamble: >
   \usepackage{amsmath}
@@ -37,6 +36,7 @@ bibliography: Derek.bib
 library(rticles)
 library(rmarkdown)
 library(yaml)
+library(xtable)
 ```
 
 ```{r, echo=FALSE, warning=FALSE}
@@ -44,7 +44,21 @@ library(knitr)
 opts_chunk$set(prompt=TRUE)
 options(replace.assign=TRUE, width=90, prompt="R> ")
 ```
+
 # Introduction
+
+##Imperfect detection in wildlife surveys
+
+One of the main objectives of ecology is to study the abundance and distribution of species and populations. The problem is that estimation of population is time consuming, hard to replicate and almost impossible in rare species due to the fact that they are hard to detect, which leads to false absences that might cause underestimation of abundances and distribution. Despite this, most sampling and analysis techniques don’t take into account the inherent imperfect detection found in natural populations. One of the tools used to overcome this limitation is occupancy modeling.
+
+##Occupancy models, taking into account detection probability
+
+In the last decade, Occupancy modeling has been increasingly used as a method to account for how species respond to environmental or anthropogenic factors. It has also been shown to be useful as a species distribution-modeling tool when species have imperfect detection. Another use for what it has been used is for managers to change the environment of managed areas in order to improve the status of species of conservation concern \citep{mackenzie_estimating_2002, mackenzie2006occupancy} but as far as we know this is the first method that takes into account both species diversity and individual species abundance in order to select conservation areas.
+Occupancy models use detection-nondetection data from repeat surveys to simultaneously estimate probabilities of detection (p) and occupancy $\psi$ (Kellner and Swihart 2014, MacKenzie 2006). Occupancy is defined as the proportion of habitat occupied by a species (MacKenzie et al. 2002)
+
+
+##Occupancy modeling y formulacion matematica
+
 
 ## Single-species or multiple-species management
 
@@ -63,7 +77,7 @@ In this paper we present package \pkg{DiversityOccupancy}, used in the \proglang
 
 In the last decade, Occupancy modeling has been used more and more as a method to account for how species respond to environmental or anthropogenic factors. It has also been shown to be useful as a species distribution modeling tool when species have imperfect detection. Another use for what it has been used is for managers to change the environment of managed areas in order to improve the status of species of conservation concern \citep{mackenzie_estimating_2002, mackenzie2006occupancy} but as far as we know this is the first method that takes into account both species diversity and individual species abundance in order to select conservation areas.
 
-Occupancy models use detection-nondetection data from repeat surveys to simultaneously estimate probabilities of detection (p) and occupancy (psi) \citep{mackenzie2006occupancy}. 
+Occupancy models use detection-nondetection data from repeat surveys to simultaneously estimate probabilities of detection (p) and occupancy ($\psi$) \citep{mackenzie2006occupancy}. 
 \citep{burnham2003model}.  We standardized all continuous site covariates t
 
 
@@ -76,12 +90,15 @@ library(knitr)
 
 ### Imperfect detection and the need for occupancy modeling
 
-One of the main objectives of ecology is to study the abundance and distribution of species and populations. For management also it is important to actively monitor many species, the main problem with this is that many species have imperfect detection, that is we could survey 
-Occupancy models use detection-nondetection data from repeat surveys to simultaneously estimate probabilities of detection and occupancy.
+One of the main objectives of ecology is to study the abundance and distribution of species and populations. The problem is that estimation of population is time consuming, hard to replicate and almost impossible in rare species due to the fact that they are really hard to detect, whic leads to false absences that might bias estimates. Despite this most sampling and analysis techniques don't deal with imperfect detection. Occupancy models use detection-nondetection data from repeat surveys to simultaneously estimate probabilities of detection and occupancy \citep{kellner2014accounting}. Occupancy is defined as the proportion of habitat occupied by a species \citep{mackenzie_estimating_2002}
 
 ### History of occupancy modeling
 
+Occupancy modeling was first proposed in 2002 \citep{mackenzie_estimating_2002}
+
 ### Math of Occupancy modeling
+
+Lets suppose we are trying to determine the probability of a species presence in a site ($\psi$), given the probability of detection (p). There are t Trials in the field to detect the species in a site, and the detections (1) and non-detections (0) are tallied as a detection history. Then after the estimation of p, we can say that the cumulative probability of detection is:
 
 $$
 \begin{aligned}
@@ -89,6 +106,7 @@ $$
 \end{aligned}
 $$
 
+If S sites are sampled and the species was detected Sd times, our estimation of $\psi$ is:
 
 $$
 \begin{aligned}
@@ -96,11 +114,8 @@ $$
 \end{aligned}
 $$
 
-$$
-\begin{aligned}
-  \psi & = \frac{Sd}{S \times\ p*} \
-\end{aligned}
-$$
+
+Furthermore, both the probability of detection (p) and occupancy ($\psi$) may be a function of covariates. We can extent the model to include covaiates using the following formula.
 
 $$
 \begin{aligned}
@@ -122,8 +137,9 @@ $$
 
 ```{r, echo=FALSE, results='asis'}
 Softwares <- read.csv("~/DiversityOccupancyJSS/DiversityOccuPaper/Untitled/Softwares.csv", na.strings="")
-
-kable(Softwares, format = "latex")
+names <- colnames(Softwares[,-1])
+colnames(Softwares) <- c("", names)
+print(xtable(Softwares, align = rep("c", 8)), scalebox='0.75')
 ```
 
 
@@ -214,6 +230,45 @@ A list of data frames, in which each data frame includes a daily measurement of 
 names(Daily_Cov)
 #here we see the first dataframe of the Daily_Cov dataset
 head(Daily_Cov[[1]])
+```
+
+##Fiting models for occupancy
+
+As an example of batch fitting occupancy models, we will use the *IslandBirds* dataset, at first we will do a simple occupancy model without automatic model selection:
+
+```{r, echo=TRUE, cache=TRUE, message=FALSE, warning=FALSE}
+BirdOccupancy <-batchoccu(pres = IslandBirds, sitecov = siteCov, obscov = Daily_Cov, spp =  5, form = ~ Day + Wind + Rain + Noise + Clouds ~
+Elev + AgroFo + SecVec + Wetland)
+```
+
+In this case *pres* expects the detection history file explained above, *sitecov*, expects a dataframe with the covariates used to estimate occupancy, *obscov* is a list of dataframes with the variables expected to affect the probability of detection, *spp* is the number of species in the *pres* file, and *form* is the formula used to fit the model  
+
+This creates an object of the class *batchoccupancy* We can check the fitted model accesing the *models* element
+
+```{r, echo=TRUE, cache=TRUE, message=FALSE, warning=FALSE}
+BirdOccupancy$models
+```
+
+In order to do automatic model selection for the occupancy models, you have to change the option of dredge to TRUE:
+
+```{r, echo=TRUE, cache=TRUE, message=FALSE, warning=FALSE}
+BirdOccupancy <-batchoccu(pres = IslandBirds, sitecov = siteCov, obscov = Daily_Cov, spp =  5, form = ~ Day + Wind + Rain + Noise + Clouds ~
+Elev + AgroFo + SecVec + Wetland, dredge = TRUE)
+```
+
+###Ploting the response of occupancy for each species and each variable
+
+\pkg{DiversityOccupancy}, has a build in function *responseplot.occu* that will automatically plot the occupancy responce to the variation of any of the covariates from the *sitecov* file. To use this function you need a *batchoccupancy* model to feed the batch parameter, and then you have to select which species and variable to plot. In the next graph, we are ploting the responce of the fourth species (*Rukia longirostra*), for elevation. This function automatically limits the variable of interest between the minimum and maximum value found in the field.
+
+```{r, echo=TRUE, cache=TRUE, message=FALSE, warning=FALSE}
+responseplot.occu(batch = BirdOccupancy, spp = 4, variable = Elev)
+```
+
+This next plot shows again, the response to elevation, but in this case for species 5 (*Ducula oceanica*).
+
+```{r, echo=TRUE, cache=TRUE, message=FALSE, warning=FALSE}
+
+responseplot.occu(batch = BirdOccupancy, spp =  5, variable = Elev)
 ```
 
 ##Fiting models for abundance and predicting alpha diversity
