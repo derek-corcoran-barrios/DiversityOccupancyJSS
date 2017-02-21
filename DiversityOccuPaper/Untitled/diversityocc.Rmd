@@ -23,6 +23,7 @@ keywords:
   plain:     [keywords, not capitalized, Occupancy modeling]
 preamble: >
   \usepackage{amsmath}
+  \usepackage{amsfonts}
 biblio-style: jss
 output:
   rticles::jss_article:
@@ -43,6 +44,7 @@ library(xtable)
 library(knitr)
 opts_chunk$set(prompt=TRUE)
 options(replace.assign=TRUE, width=90, prompt="R> ")
+knitr::opts_chunk$set(warning =  FALSE)
 ```
 
 # Introduction
@@ -136,10 +138,30 @@ $$
 - Unmarked (\proglang{R})
 
 ```{r, echo=FALSE, results='asis'}
-Softwares <- read.csv("~/DiversityOccupancyJSS/DiversityOccuPaper/Untitled/Softwares.csv", na.strings="")
+library(xtable)
+Softwares <- structure(list(X = structure(c(9L, 5L, 7L, 4L, 1L, 8L, 6L, 2L, 
+3L), .Label = c("Alpha diversity models", "Build in model selection", 
+"Built in response plot", "Multiple Species Abundance", "Multiple Species Single Season occupancy", 
+"Priority area selection", "Single Species Abundance", "Single Species Dynamic occupancy", 
+"Single Species Single Season occupancy"), class = "factor"), 
+    Diversityoccupancy = structure(c(1L, 1L, 1L, 1L, 1L, NA, 
+    1L, 1L, 1L), .Label = "$\\checkmark$", class = "factor"), Unmarked = structure(c(1L, 
+    NA, 2L, NA, NA, 2L, NA, NA, NA), .Label = c("$\\checkmark$", 
+    "$\\checkmark$"), class = "factor"), stocc = structure(c(1L, NA, NA, 
+    NA, NA, NA, NA, NA, NA), .Label = "$\\checkmark$", class = "factor"), 
+    Presence = structure(c(1L, NA, 1L, NA, NA, 1L, NA, NA, NA
+    ), .Label = "$\\checkmark$", class = "factor"), Pom = structure(c(1L, 
+    NA, NA, NA, NA, NA, NA, NA, NA), .Label = "$\\checkmark$", class = "factor"), 
+    camptrapR = structure(c(1L, NA, NA, NA, NA, NA, NA, NA, NA
+    ), .Label = "$\\checkmark$", class = "factor")), .Names = c("X", "Diversityoccupancy", 
+"Unmarked", "stocc", "Presence", "Pom", "camptrapR"), class = "data.frame", row.names = c(NA, 
+-9L))
+
 names <- colnames(Softwares[,-1])
 colnames(Softwares) <- c("", names)
-print(xtable(Softwares, align = rep("c", 8)), scalebox='0.75')
+print(xtable(Softwares, align = rep("c", 8)), scalebox='0.75', type = "latex", sanitize.text.function = function (x) x, include.rownames = F, comment=FALSE)
+
+
 ```
 
 
@@ -180,13 +202,6 @@ As an example we probide part of the  dataset collected in Pohnpei Island \citep
 The Island of Pohnpei is a 334 squared kilometer island, in Oceania. it is the largest and most populated Island in the Federal States of Micronesia. Like every oceanic Island it has high endemism. It has a rich mosaic of ecosystems composed by manglars, palm forest, dwarf forests among others \citep{raynor1994resource, buden2000comparison, merlin2005kava}.
 
 ## Bird Species
-
-$$
-\begin{aligned}
-  \dot{x} & = \sigma(y-x) \\
-  \dot{y} & = \rho x- y - xz 
-\end{aligned}
-$$
 
 # Use of the package
 

@@ -7,27 +7,37 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(warning =  FALSE)
 ```
 
 ## Tables
 
-```{r, results='asis'}
+This is a $\psi$
+
+```{r, results='asis', echo = FALSE}
 library(xtable)
-Softwares <-structure(list(X = structure(c(6L, 3L, 4L, 2L, 5L, 1L), .Label = c("Built in response plot", 
-"Multiple Species Abundance", "Multiple Species Single Season", 
-"Single Species Abundance", "Single Species Dynamic ", "Single Species Single Season"
-), class = "factor"), camptrapR = c(NA, NA, NA, NA, NA, NA), 
-    DiversityOccupancy = structure(c(1L, 1L, 1L, 1L, NA, 1L), .Label = "X", class = "factor"), 
-    downscale = c(NA, NA, NA, NA, NA, NA), hillmakerR = c(NA, 
-    NA, NA, NA, NA, NA), pom = c(NA, NA, NA, NA, NA, NA), presence = c(NA, 
-    NA, NA, NA, NA, NA), stocc = c(NA, NA, NA, NA, NA, NA), unmarked = structure(c(1L, 
-    NA, 1L, NA, 1L, NA), .Label = "X", class = "factor")), .Names = c("X", 
-"camptrapR", "DiversityOccupancy", "downscale", "hillmakerR", 
-"pom", "presence", "stocc", "unmarked"), class = "data.frame", row.names = c(NA, 
--6L))
+Softwares <- structure(list(X = structure(c(9L, 5L, 7L, 4L, 1L, 8L, 6L, 2L, 
+3L), .Label = c("Alpha diversity models", "Build in model selection", 
+"Built in response plot", "Multiple Species Abundance", "Multiple Species Single Season occupancy", 
+"Priority area selection", "Single Species Abundance", "Single Species Dynamic occupancy", 
+"Single Species Single Season occupancy"), class = "factor"), 
+    Diversityoccupancy = structure(c(1L, 1L, 1L, 1L, 1L, NA, 
+    1L, 1L, 1L), .Label = "$\\checkmark$", class = "factor"), Unmarked = structure(c(1L, 
+    NA, 2L, NA, NA, 2L, NA, NA, NA), .Label = c("$\\checkmark$", 
+    "$\\checkmark$"), class = "factor"), stocc = structure(c(1L, NA, NA, 
+    NA, NA, NA, NA, NA, NA), .Label = "$\\checkmark$", class = "factor"), 
+    Presence = structure(c(1L, NA, 1L, NA, NA, 1L, NA, NA, NA
+    ), .Label = "$\\checkmark$", class = "factor"), Pom = structure(c(1L, 
+    NA, NA, NA, NA, NA, NA, NA, NA), .Label = "$\\checkmark$", class = "factor"), 
+    camptrapR = structure(c(1L, NA, NA, NA, NA, NA, NA, NA, NA
+    ), .Label = "$\\checkmark$", class = "factor")), .Names = c("X", "Diversityoccupancy", 
+"Unmarked", "stocc", "Presence", "Pom", "camptrapR"), class = "data.frame", row.names = c(NA, 
+-9L))
 
 names <- colnames(Softwares[,-1])
 colnames(Softwares) <- c("", names)
-print(xtable(Softwares, align = rep("c", 10)), scalebox='0.75')
+print(xtable(Softwares, align = rep("c", 8)), scalebox='0.75', type = "latex", sanitize.text.function = function (x) x, include.rownames = F, comment=FALSE)
+
+
 ```
 
